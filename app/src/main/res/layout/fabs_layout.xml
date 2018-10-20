@@ -8,8 +8,8 @@
         android:id="@+id/add_task_fab"
         android:layout_width="wrap_content"
         android:layout_height="32dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentLeft="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
         android:layout_margin="16dp"
         android:clickable="true"
@@ -51,8 +51,8 @@
         android:id="@+id/achievements_fab"
         android:layout_width="wrap_content"
         android:layout_height="32dp"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
         android:layout_alignParentBottom="true"
         android:layout_gravity="bottom|end"
         android:layout_margin="16dp"
@@ -67,18 +67,6 @@
             android:layout_gravity="center"
             android:orientation="horizontal">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginStart="16dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginRight="8dp"
-                android:text="Done"
-                android:textColor="@android:color/white"
-                android:textSize="20dp" />
-
             <ImageView
                 android:layout_width="24dp"
                 android:layout_height="24dp"
@@ -86,6 +74,19 @@
                 android:layout_margin="8dp"
                 android:src="@drawable/ic_achievements"
                 android:tint="@android:color/white" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginRight="16dp"
+                android:text="Done"
+                android:textColor="@android:color/white"
+                android:textSize="20dp" />
+
 
         </LinearLayout>
 
