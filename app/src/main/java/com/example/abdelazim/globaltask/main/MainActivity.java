@@ -2,10 +2,12 @@ package com.example.abdelazim.globaltask.main;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Intent;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -13,9 +15,14 @@ import android.view.View;
 import com.example.abdelazim.globaltask.R;
 import com.example.abdelazim.globaltask.achievements.AchievementsFragment;
 import com.example.abdelazim.globaltask.add_task.AddTaskFragment;
-import com.example.abdelazim.globaltask.settings.SettingsFragment;
+import com.example.abdelazim.globaltask.repository.local.AppDatabase;
+import com.example.abdelazim.globaltask.repository.model.Task;
+import com.example.abdelazim.globaltask.settings.SettingsActivity;
 import com.example.abdelazim.globaltask.tasks.TasksFragment;
+import com.example.abdelazim.globaltask.utils.AppExecutors;
 import com.robertlevonyan.views.customfloatingactionbutton.FloatingActionLayout;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -50,7 +57,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         // Display TasksFragment as an start screen
         fragmentManager.beginTransaction()
-                .add(R.id.main_frag_container, new TasksFragment())
+                .replace(R.id.main_frag_container, new TasksFragment(), "tasks_frag")
                 .setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left)
                 .commit();
         setFabsVisibility(1, 1, 0, 0);
@@ -78,7 +85,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 // Display AddTaskFragment
                 fragmentManager.beginTransaction()
                         .setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left)
-                        .replace(R.id.main_frag_container, new AddTaskFragment())
+                        .replace(R.id.main_frag_container, new AddTaskFragment(), "add_task_frag")
                         .commit();
                 setFabsVisibility(0, 0, 1, 0);
                 break;
@@ -86,7 +93,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 // Display AchievementsFragment
                 fragmentManager.beginTransaction()
                         .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right)
-                        .replace(R.id.main_frag_container, new AchievementsFragment())
+                        .replace(R.id.main_frag_container, new AchievementsFragment(), "achievements_frag")
                         .commit();
                 setFabsVisibility(0, 0, 0, 1);
                 break;
@@ -94,7 +101,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 // Display TasksFragment
                 fragmentManager.beginTransaction()
                         .setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left)
-                        .replace(R.id.main_frag_container, new TasksFragment())
+                        .replace(R.id.main_frag_container, new TasksFragment(), "tasks_frag")
                         .commit();
                 setFabsVisibility(1, 1, 0, 0);
                 break;
@@ -102,7 +109,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 // Display TasksFragment
                 fragmentManager.beginTransaction()
                         .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right)
-                        .replace(R.id.main_frag_container, new TasksFragment())
+                        .replace(R.id.main_frag_container, new TasksFragment(), "tasks_frag")
                         .commit();
                 setFabsVisibility(1, 1, 0, 0);
                 break;
@@ -120,12 +127,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch (item.getItemId()) {
             case R.id.action_settings:
                 // Display SettingsFragment
-                fragmentManager.beginTransaction()
-                        .addToBackStack(null)
-                        .setCustomAnimations(R.anim.slide_in_top, R.anim.freez, R.anim.freez, R.anim.slide_out_top)
-                        .replace(R.id.main_frag_container, new SettingsFragment())
-                        .commit();
-                setFabsVisibility(0, 0, 0, 0);
+                startActivity(new Intent(MainActivity.this, SettingsActivity.class));
+                finish();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
