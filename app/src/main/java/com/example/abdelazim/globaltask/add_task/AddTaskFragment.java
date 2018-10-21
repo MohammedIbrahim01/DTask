@@ -1,4 +1,4 @@
-package com.example.abdelazim.globaltask.all_achievements;
+package com.example.abdelazim.globaltask.add_task;
 
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
@@ -11,24 +11,24 @@ import android.view.ViewGroup;
 
 import com.example.abdelazim.globaltask.R;
 
-public class AllAchievementsFragment extends Fragment {
+public class AddTaskFragment extends Fragment {
 
-    private AllAchievementsViewModel mViewModel;
+    private AddTaskViewModel mViewModel;
 
-    public static AllAchievementsFragment newInstance() {
-        return new AllAchievementsFragment();
+    public static AddTaskFragment newInstance() {
+        return new AddTaskFragment();
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.all_achievements_fragment, container, false);
+        return inflater.inflate(R.layout.add_task_fragment, container, false);
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mViewModel = ViewModelProviders.of(this).get(AllAchievementsViewModel.class);
+        mViewModel = ViewModelProviders.of(this).get(AddTaskViewModel.class);
         // TODO: Use the ViewModel
     }
 

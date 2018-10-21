@@ -1,4 +1,4 @@
-package com.example.abdelazim.globaltask.day_tasks;
+package com.example.abdelazim.globaltask.achievements;
 
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
@@ -11,24 +11,24 @@ import android.view.ViewGroup;
 
 import com.example.abdelazim.globaltask.R;
 
-public class DayTasksFragment extends Fragment {
+public class AchievementsFragment extends Fragment {
 
-    private DayTasksViewModel mViewModel;
+    private AchievementsViewModel mViewModel;
 
-    public static DayTasksFragment newInstance() {
-        return new DayTasksFragment();
+    public static AchievementsFragment newInstance() {
+        return new AchievementsFragment();
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.day_tasks_fragment, container, false);
+        return inflater.inflate(R.layout.achievements_fragment, container, false);
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mViewModel = ViewModelProviders.of(this).get(DayTasksViewModel.class);
+        mViewModel = ViewModelProviders.of(this).get(AchievementsViewModel.class);
         // TODO: Use the ViewModel
     }
 
