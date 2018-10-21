@@ -6,11 +6,14 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 
 import com.example.abdelazim.globaltask.R;
 import com.example.abdelazim.globaltask.achievements.AchievementsFragment;
 import com.example.abdelazim.globaltask.add_task.AddTaskFragment;
+import com.example.abdelazim.globaltask.settings.SettingsFragment;
 import com.example.abdelazim.globaltask.tasks.TasksFragment;
 import com.robertlevonyan.views.customfloatingactionbutton.FloatingActionLayout;
 
@@ -62,10 +65,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void setFabsVisibility(int done, int addTask, int back, int tasks) {
 
-        doneFab.setVisibility(done == 1 ? View.VISIBLE : View.INVISIBLE);
-        addTaskFab.setVisibility(addTask == 1 ? View.VISIBLE : View.INVISIBLE);
-        backFab.setVisibility(back == 1 ? View.VISIBLE : View.INVISIBLE);
-        tasksFab.setVisibility(tasks == 1 ? View.VISIBLE : View.INVISIBLE);
+        doneFab.setVisibility(done == 1 ? View.VISIBLE : View.GONE);
+        addTaskFab.setVisibility(addTask == 1 ? View.VISIBLE : View.GONE);
+        backFab.setVisibility(back == 1 ? View.VISIBLE : View.GONE);
+        tasksFab.setVisibility(tasks == 1 ? View.VISIBLE : View.GONE);
     }
 
     @Override
@@ -103,6 +106,29 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         .commit();
                 setFabsVisibility(1, 1, 0, 0);
                 break;
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_settings:
+                // Display SettingsFragment
+                fragmentManager.beginTransaction()
+                        .addToBackStack(null)
+                        .setCustomAnimations(R.anim.slide_in_top, R.anim.freez, R.anim.freez, R.anim.slide_out_top)
+                        .replace(R.id.main_frag_container, new SettingsFragment())
+                        .commit();
+                setFabsVisibility(0, 0, 0, 0);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
     }
 }
