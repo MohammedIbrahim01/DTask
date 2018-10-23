@@ -42,4 +42,9 @@ public class TasksViewModel extends ViewModel {
         adapter.setTaskList(tasks);
         adapter.notifyDataSetChanged();
     }
+
+    public void markAsDone(Task task) {
+
+        repository.markAsDone(task);
+    }
 }

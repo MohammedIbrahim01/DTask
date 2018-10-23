@@ -87,4 +87,17 @@ public class AppRepository {
         while (!achievementListFetched) ;
         return achievementList;
     }
+
+    public void markAsDone(final Task task) {
+
+        task.setDone(true);
+
+        executors.diskIO.execute(new Runnable() {
+            @Override
+            public void run() {
+
+                taskDao.updateTask(task);
+            }
+        });
+    }
 }
