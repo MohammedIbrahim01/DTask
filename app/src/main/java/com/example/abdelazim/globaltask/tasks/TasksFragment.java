@@ -13,13 +13,18 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.abdelazim.globaltask.R;
+import com.example.abdelazim.globaltask.main.MainViewModel;
 import com.example.abdelazim.globaltask.repository.model.Task;
 
 import java.util.List;
 
 public class TasksFragment extends Fragment {
 
+    // MainViewModel
+    private MainViewModel mainViewModel;
+    // ViewModel of this fragment
     private TasksViewModel mViewModel;
+    // Views
     private RecyclerView tasksRecyclerView;
     private TaskAdapter adapter;
 
@@ -33,23 +38,32 @@ public class TasksFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
 
+        // Inflate fragment layout
         View view = inflater.inflate(R.layout.tasks_fragment, container, false);
 
-        setupRecyclerViewWithAdapter(view);
-
-        mViewModel = ViewModelProviders.of(this).get(TasksViewModel.class);
-
-        mViewModel.start(getContext(), adapter);
-
-        mViewModel.getTaskList().observe(this, new Observer<List<Task>>() {
-            @Override
-            public void onChanged(@Nullable List<Task> tasks) {
-
-                mViewModel.displayTasks(tasks);
-            }
-        });
+        // Initialize views
+        initViews(view);
 
         return view;
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        // Get ViewModels
+        mainViewModel = ViewModelProviders.of(getActivity()).get(MainViewModel.class);
+        mViewModel = ViewModelProviders.of(this).get(TasksViewModel.class);
+
+        mViewModel.start(mainViewModel.getRepository(), adapter);
+
+        mViewModel.observe(this);
+    }
+
+    private void initViews(View view) {
+
+        tasksRecyclerView = view.findViewById(R.id.tasks_recyclerView);
+        setupRecyclerViewWithAdapter();
     }
 
 
@@ -59,15 +73,12 @@ public class TasksFragment extends Fragment {
      * Instantiate TaskAdapter
      *
      * set adapter and LayoutManager
-     *
-     * @param view
      */
-    private void setupRecyclerViewWithAdapter(View view) {
+    private void setupRecyclerViewWithAdapter() {
 
         adapter = new TaskAdapter();
-        tasksRecyclerView = view.findViewById(R.id.tasks_recyclerView);
         tasksRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        tasksRecyclerView.setAdapter(adapter);
         tasksRecyclerView.setHasFixedSize(true);
+        tasksRecyclerView.setAdapter(adapter);
     }
 }

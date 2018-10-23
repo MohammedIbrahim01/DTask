@@ -12,13 +12,18 @@ import android.view.ViewGroup;
 import android.widget.ExpandableListView;
 
 import com.example.abdelazim.globaltask.R;
+import com.example.abdelazim.globaltask.main.MainViewModel;
 import com.example.abdelazim.globaltask.repository.model.Task;
 
 import java.util.List;
 
 public class AchievementsFragment extends Fragment {
 
+    // MainViewModel
+    private MainViewModel mainViewModel;
+    // ViewModel of this fragment
     private AchievementsViewModel mViewModel;
+    // Views
     private ExpandableListView achievementsExpandableListView;
     private AchievementAdapter adapter;
 
@@ -29,21 +34,11 @@ public class AchievementsFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
+        // Inflate fragment layout
         View view = inflater.inflate(R.layout.achievements_fragment, container, false);
 
-        setupExpandableListViewWithAdapter(view);
-
-        mViewModel = ViewModelProviders.of(this).get(AchievementsViewModel.class);
-
-        mViewModel.start(getContext(), adapter);
-
-        mViewModel.getAchievementsList().observe(this, new Observer<List<Task>>() {
-            @Override
-            public void onChanged(@Nullable List<Task> achievements) {
-
-                mViewModel.displayAchievements(achievements);
-            }
-        });
+        // Initialize Views
+        initViews(view);
 
         achievementsExpandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
@@ -57,10 +52,29 @@ public class AchievementsFragment extends Fragment {
         return view;
     }
 
-    private void setupExpandableListViewWithAdapter(View view) {
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        // Get ViewModels
+        mainViewModel = ViewModelProviders.of(getActivity()).get(MainViewModel.class);
+        mViewModel = ViewModelProviders.of(this).get(AchievementsViewModel.class);
+
+        mViewModel.start(mainViewModel.getRepository(), adapter);
+
+        mViewModel.observe(this);
+    }
+
+    private void initViews(View view) {
+
+        achievementsExpandableListView = view.findViewById(R.id.achievements_expandableListView);
+        setupExpandableListViewWithAdapter();
+    }
+
+
+    private void setupExpandableListViewWithAdapter() {
 
         adapter = new AchievementAdapter();
-        achievementsExpandableListView = view.findViewById(R.id.achievements_expandableListView);
         achievementsExpandableListView.setAdapter(adapter);
     }
 }

@@ -1,12 +1,13 @@
 package com.example.abdelazim.globaltask.achievements;
 
+import android.arch.lifecycle.LifecycleOwner;
 import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModel;
-import android.content.Context;
+import android.support.annotation.Nullable;
 
-import com.example.abdelazim.globaltask.repository.local.AppDatabase;
+import com.example.abdelazim.globaltask.repository.AppRepository;
 import com.example.abdelazim.globaltask.repository.model.Task;
-import com.example.abdelazim.globaltask.tasks.TaskAdapter;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -14,32 +15,42 @@ import java.util.List;
 
 public class AchievementsViewModel extends ViewModel {
 
-
-    private LiveData<List<Task>> achievementsList;
+    private AppRepository repository;
     private AchievementAdapter adapter;
 
-    public void start(Context context, AchievementAdapter adapter) {
+    public void start(AppRepository repository, AchievementAdapter adapter) {
 
+        this.repository = repository;
         this.adapter = adapter;
-        achievementsList = AppDatabase.getInstance(context).taskDao().getAchievements();
     }
 
-    public LiveData<List<Task>> getAchievementsList() {
-        return achievementsList;
+
+    public void observe(LifecycleOwner owner) {
+
+        getAchievementsList().observe(owner, new Observer<List<Task>>() {
+            @Override
+            public void onChanged(@Nullable List<Task> achievements) {
+
+                displayAchievements(achievements);
+            }
+        });
     }
 
-    public void displayAchievements(List<Task> achievements) {
+
+    private LiveData<List<Task>> getAchievementsList() {
+        return repository.getAchievements();
+    }
+
+    private void displayAchievements(List<Task> achievements) {
 
         List<String> headerList = new ArrayList<>();
-        headerList.add("21 October");
-        headerList.add("22 October");
         headerList.add("23 October");
         adapter.setHeaderList(headerList);
+
         HashMap<String, List<Task>> hashMap = new HashMap<>();
         hashMap.put(headerList.get(0), achievements);
-        hashMap.put(headerList.get(1), achievements);
-        hashMap.put(headerList.get(2), achievements);
         adapter.setListHashMap(hashMap);
+
         adapter.notifyDataSetChanged();
     }
 }

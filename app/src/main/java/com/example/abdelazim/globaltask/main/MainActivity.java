@@ -52,6 +52,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         // Get ViewModel
         mainViewModel = ViewModelProviders.of(this).get(MainViewModel.class);
+
+        // Start ViewModel
+        mainViewModel.start(getApplicationContext());
+
         // Get fragmentManager
         fragmentManager = getSupportFragmentManager();
 
@@ -84,7 +88,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.add_task_fab:
                 // Display AddTaskFragment
                 fragmentManager.beginTransaction()
-                        .setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left)
+                        .setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_right)
+                        .addToBackStack(null)
                         .replace(R.id.main_frag_container, new AddTaskFragment(), "add_task_frag")
                         .commit();
                 setFabsVisibility(0, 0, 1, 0);
