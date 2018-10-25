@@ -9,36 +9,42 @@ import android.widget.TextView;
 
 import com.example.abdelazim.globaltask.R;
 import com.example.abdelazim.globaltask.repository.model.Task;
+import com.example.abdelazim.globaltask.utils.AppFormatter;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
 
+
     private List<Task> taskList = new ArrayList<>();
 
-    public List<Task> getTaskList() {
+    // Setter and Getter for taskList
+    List<Task> getTaskList() {
         return taskList;
     }
 
-    public void setTaskList(List<Task> taskList) {
+    void setTaskList(List<Task> taskList) {
         this.taskList = taskList;
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_tasks_list, viewGroup, false);
 
+        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_tasks_list, viewGroup, false);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
-        Task currentTask = taskList.get(i);
-        viewHolder.setTitle(currentTask.getTitle());
-        viewHolder.setDescription(currentTask.getDescription());
-        viewHolder.setTime(String.valueOf(currentTask.getTime()));
+
+        // Get current task
+        Task task = taskList.get(i);
+        // Populate UI
+        viewHolder.setTitle(task.getTitle());
+        viewHolder.setDescription(task.getDescription());
+        viewHolder.setTime(AppFormatter.formatTime(task.getTime()));
     }
 
     @Override
@@ -46,25 +52,29 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
         return taskList.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+
+    /**
+     * Item ViewHolder
+     */
+    class ViewHolder extends RecyclerView.ViewHolder {
         TextView taskTitleTextView, taskDescriptionTextView, taskTimeTextView;
 
-        public ViewHolder(@NonNull View itemView) {
+        ViewHolder(@NonNull View itemView) {
             super(itemView);
             taskTitleTextView = itemView.findViewById(R.id.task_title_textView);
             taskDescriptionTextView = itemView.findViewById(R.id.task_description_textView);
             taskTimeTextView = itemView.findViewById(R.id.task_time_textView);
         }
 
-        public void setTitle(String title) {
+        void setTitle(String title) {
             taskTitleTextView.setText(title);
         }
 
-        public void setDescription(String description) {
+        void setDescription(String description) {
             taskDescriptionTextView.setText(description);
         }
 
-        public void setTime(String time) {
+        void setTime(String time) {
             taskTimeTextView.setText(time);
         }
     }

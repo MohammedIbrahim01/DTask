@@ -8,7 +8,8 @@ import android.widget.TextView;
 
 import com.example.abdelazim.globaltask.R;
 import com.example.abdelazim.globaltask.repository.model.Achievement;
-import com.example.abdelazim.globaltask.repository.model.Task;
+import com.example.abdelazim.globaltask.repository.model.Day;
+import com.example.abdelazim.globaltask.repository.model.DayWithAchievements;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -16,42 +17,35 @@ import java.util.List;
 
 class AchievementAdapter extends BaseExpandableListAdapter {
 
-    private List<String> headerList = new ArrayList<>();
-    private HashMap<String, List<Achievement>> listHashMap = new HashMap<>();
+    private List<Day> dayList = new ArrayList<>();
+    private HashMap<Day, List<Achievement>> dayAchievementsHashMap = new HashMap<>();
 
-
-    public void setHeaderList(List<String> headerList) {
-        this.headerList = headerList;
-    }
-
-    public void setListHashMap(HashMap<String, List<Achievement>> listHashMap) {
-        this.listHashMap = listHashMap;
-    }
 
     @Override
     public int getGroupCount() {
-        return headerList.size();
+
+        return dayList.size();
     }
 
     @Override
     public int getChildrenCount(int groupPosition) {
-        List<Achievement> taskList = listHashMap.get(headerList.get(groupPosition));
-        if (taskList == null)
+        List<Achievement> achievementList = dayAchievementsHashMap.get(dayList.get(groupPosition));
+        if (achievementList == null)
             return 0;
-        return taskList.size();
+        return achievementList.size();
     }
 
     @Override
     public Object getGroup(int groupPosition) {
-        return headerList.get(groupPosition);
+        return dayList.get(groupPosition);
     }
 
     @Override
     public Object getChild(int groupPosition, int childPosition) {
-        List<Achievement> AchievementList = listHashMap.get(headerList.get(groupPosition));
-        if (AchievementList == null)
-            return null;
-        return AchievementList.get(childPosition);
+        List<Achievement> achievementList = dayAchievementsHashMap.get(dayList.get(groupPosition));
+        if (achievementList == null)
+            return "null";
+        return achievementList.get(childPosition);
     }
 
     @Override
@@ -72,27 +66,38 @@ class AchievementAdapter extends BaseExpandableListAdapter {
     @Override
     public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
 
+        // Recycling View
         if (convertView == null)
             convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.header_achievements_list, parent, false);
+
+        // Expanded header color effect
         if (isExpanded)
-            convertView.setBackgroundColor(parent.getResources().getColor(R.color.colorAccent));
+            convertView.setBackgroundColor(parent.getResources().getColor(R.color.colorExpandableListHeader));
         else
             convertView.setBackgroundColor(parent.getResources().getColor(android.R.color.transparent));
 
-        String headerTitle = (String) getGroup(groupPosition);
+        // Header ViewHolder
         HeaderViewHolder viewHolder = new HeaderViewHolder(convertView);
-
-        viewHolder.setDate(headerTitle);
+        // Get current day
+        Day day = (Day) getGroup(groupPosition);
+        // Populate UI
+        viewHolder.setDate(day.getHeader());
 
         return convertView;
     }
 
     @Override
     public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
+
+        // Recycling
         if (convertView == null)
             convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_achievements_list, parent, false);
+
+        // Achievement ViewHolder
         ChildViewHolder viewHolder = new ChildViewHolder(convertView);
+        // Get current Achievement
         Achievement currentAchievement = (Achievement) getChild(groupPosition, childPosition);
+        // Populate UI
         viewHolder.setTitle(currentAchievement.getTitle());
         viewHolder.setDescription(currentAchievement.getDescription());
 
@@ -104,31 +109,65 @@ class AchievementAdapter extends BaseExpandableListAdapter {
         return false;
     }
 
-    public class HeaderViewHolder {
+
+    /**
+     * Extract dayList and achievement lists from DayWithAchievements List
+     *
+     * @param dayWithAchievementsList list of object that contains day and its achievementList
+     */
+    void setDayWithAchievementsList(List<DayWithAchievements> dayWithAchievementsList) {
+
+        List<Day> dayList = new ArrayList<>();
+        HashMap<Day, List<Achievement>> dayAchievementsHashMap = new HashMap<>();
+
+        for (int i = 0; i < dayWithAchievementsList.size(); i++) {
+
+            DayWithAchievements currentDayWithAchievements = dayWithAchievementsList.get(i);
+
+            Day currentDay = currentDayWithAchievements.day;
+            List<Achievement> currentDayAchievements = currentDayWithAchievements.achievementList;
+
+            dayList.add(currentDay);
+            dayAchievementsHashMap.put(currentDay, currentDayAchievements);
+        }
+
+        this.dayList = dayList;
+        this.dayAchievementsHashMap = dayAchievementsHashMap;
+    }
+
+
+    /**
+     * Header ViewHolder
+     */
+    class HeaderViewHolder {
         TextView dateTextView;
 
-        public HeaderViewHolder(View itemView) {
+        HeaderViewHolder(View itemView) {
             dateTextView = itemView.findViewById(R.id.header_date_textView);
         }
 
-        public void setDate(String time) {
-            dateTextView.setText(time);
+        void setDate(String date) {
+            dateTextView.setText(date);
         }
     }
 
-    public class ChildViewHolder {
+
+    /**
+     * Child ViewHolder
+     */
+    class ChildViewHolder {
         TextView achievementTitleTextView, achievementDescriptionTextView;
 
-        public ChildViewHolder(View itemView) {
+        ChildViewHolder(View itemView) {
             achievementTitleTextView = itemView.findViewById(R.id.achievement_title_textView);
             achievementDescriptionTextView = itemView.findViewById(R.id.achievement_description_textView);
         }
 
-        public void setDescription(String description) {
+        void setDescription(String description) {
             achievementDescriptionTextView.setText(description);
         }
 
-        public void setTitle(String title) {
+        void setTitle(String title) {
             achievementTitleTextView.setText(title);
         }
     }

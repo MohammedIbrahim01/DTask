@@ -1,6 +1,5 @@
 package com.example.abdelazim.globaltask.achievements;
 
-import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -13,9 +12,6 @@ import android.widget.ExpandableListView;
 
 import com.example.abdelazim.globaltask.R;
 import com.example.abdelazim.globaltask.main.MainViewModel;
-import com.example.abdelazim.globaltask.repository.model.Task;
-
-import java.util.List;
 
 public class AchievementsFragment extends Fragment {
 
@@ -51,11 +47,21 @@ public class AchievementsFragment extends Fragment {
         mainViewModel = ViewModelProviders.of(getActivity()).get(MainViewModel.class);
         mViewModel = ViewModelProviders.of(this).get(AchievementsViewModel.class);
 
+        // Start viewModel
         mViewModel.start(mainViewModel.getRepository(), adapter);
 
+        // Observe
         mViewModel.observe(this);
     }
 
+
+    /**
+     * Get views references
+     *
+     * Setup views
+     *
+     * @param view fragment layout that was inflated
+     */
     private void initViews(View view) {
 
         achievementsExpandableListView = view.findViewById(R.id.achievements_expandableListView);
@@ -63,6 +69,11 @@ public class AchievementsFragment extends Fragment {
     }
 
 
+    /**
+     * Instantiate TaskAdapter
+     *
+     * Setup recyclerView
+     */
     private void setupExpandableListViewWithAdapter() {
 
         adapter = new AchievementAdapter();

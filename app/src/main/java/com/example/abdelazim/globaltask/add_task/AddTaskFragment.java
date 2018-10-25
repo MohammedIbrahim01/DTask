@@ -19,12 +19,13 @@ import android.widget.Toast;
 import com.example.abdelazim.globaltask.R;
 import com.example.abdelazim.globaltask.main.MainViewModel;
 import com.example.abdelazim.globaltask.repository.model.Task;
+import com.example.abdelazim.globaltask.utils.AppFormatter;
 
 import java.util.Calendar;
 
 public class AddTaskFragment extends Fragment implements View.OnClickListener, TimePickerDialog.OnTimeSetListener {
 
-    // ViewModel of MainActivity
+    // MainViewModel
     private MainViewModel mainViewModel;
     // ViewModel of this fragment
     private AddTaskViewModel mViewModel;
@@ -46,7 +47,7 @@ public class AddTaskFragment extends Fragment implements View.OnClickListener, T
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
 
-        // Inflate the fragment layout
+        // Inflate fragment layout
         View view = inflater.inflate(R.layout.add_task_fragment, container, false);
 
         // Initialize views
@@ -87,19 +88,27 @@ public class AddTaskFragment extends Fragment implements View.OnClickListener, T
         setTimeButton.setOnClickListener(this);
         saveButton.setOnClickListener(this);
 
-        setVisibilities(false);
+        setupTimeLayout(0, 0, false);
     }
 
 
     /**
-     * If time was set hide setTime button and display time layout
+     * If time was set hide setTime button
      *
-     * @param timeSet
+     * Set text of timeTextView to the appropriate formatted time
+     *
+     * Display time layout
+     *
+     * @param hourOfDay
+     * @param minute
+     * @param visible
      */
-    private void setVisibilities(boolean timeSet) {
+    private void setupTimeLayout(int hourOfDay, int minute, boolean visible) {
 
-        setTimeButton.setVisibility(timeSet ? View.GONE : View.VISIBLE);
-        timeLayout.setVisibility(timeSet ? View.VISIBLE : View.GONE);
+        timeTextView.setText(AppFormatter.formatTime(hourOfDay, minute));
+
+        setTimeButton.setVisibility(visible ? View.GONE : View.VISIBLE);
+        timeLayout.setVisibility(visible ? View.VISIBLE : View.GONE);
     }
 
 
@@ -125,9 +134,7 @@ public class AddTaskFragment extends Fragment implements View.OnClickListener, T
         String title = titleEditText.getText().toString();
         String description = descriptionEditText.getText().toString();
 
-        Task task = new Task(title, description, calendar.getTimeInMillis(), false);
-
-        mViewModel.saveTask(task);
+        mViewModel.saveNewTask(title, description, calendar.getTimeInMillis());
 
         getActivity().getSupportFragmentManager().popBackStack();
     }
@@ -168,13 +175,11 @@ public class AddTaskFragment extends Fragment implements View.OnClickListener, T
     @Override
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
 
+        // Set calendar fields
         calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
         calendar.set(Calendar.MINUTE, minute);
         calendar.set(Calendar.SECOND, 0);
 
-        String formattedTime = hourOfDay + " : " + minute + " am";
-        timeTextView.setText(formattedTime);
-
-        setVisibilities(true);
+        setupTimeLayout(hourOfDay, minute, true);
     }
 }

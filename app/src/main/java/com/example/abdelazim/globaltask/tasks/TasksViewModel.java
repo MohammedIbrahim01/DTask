@@ -16,34 +16,60 @@ public class TasksViewModel extends ViewModel {
     private AppRepository repository;
     private TaskAdapter adapter;
 
+
+    /**
+     * Set the AppRepository and taskAdapter
+     *
+     * @param repository AppRepository
+     * @param adapter    TaskAdapter
+     */
     public void start(AppRepository repository, TaskAdapter adapter) {
 
         this.repository = repository;
         this.adapter = adapter;
     }
 
-    public void observe(LifecycleOwner owner) {
 
-        getTaskList().observe(owner, new Observer<List<Task>>() {
+    /**
+     * Observe TaskList changes
+     *
+     * @param owner LifecycleOwner
+     */
+    void observe(LifecycleOwner owner) {
+
+        repository.getTaskList().observe(owner, new Observer<List<Task>>() {
             @Override
             public void onChanged(@Nullable List<Task> tasks) {
 
+                // Re-display taskList whenever TaskList changed
                 displayTasks(tasks);
             }
         });
     }
 
-    private LiveData<List<Task>> getTaskList() {
-        return repository.getTaskList();
-    }
 
-    private void displayTasks(List<Task> tasks) {
+    /**
+     * Pass taskList to the adapter
+     *
+     * Then notifyAdapter
+     *
+     * @param taskList
+     */
+    private void displayTasks(List<Task> taskList) {
 
-        adapter.setTaskList(tasks);
+        adapter.setTaskList(taskList);
         adapter.notifyDataSetChanged();
     }
 
-    public void finishTask(Task task) {
+
+    /**
+     * Pass finished task to repository to remove it from task table
+     *
+     * And put it in achievement table
+     *
+     * @param task
+     */
+    void TaskFinished(Task task) {
 
         repository.finishTask(task);
     }

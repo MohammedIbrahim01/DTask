@@ -53,11 +53,21 @@ public class TasksFragment extends Fragment {
         mainViewModel = ViewModelProviders.of(getActivity()).get(MainViewModel.class);
         mViewModel = ViewModelProviders.of(this).get(TasksViewModel.class);
 
+        // Start viewModel
         mViewModel.start(mainViewModel.getRepository(), adapter);
 
+        // Observe
         mViewModel.observe(this);
     }
 
+
+    /**
+     * Get views references
+     *
+     * Setup views
+     *
+     * @param view fragment layout that was inflated
+     */
     private void initViews(View view) {
 
         tasksRecyclerView = view.findViewById(R.id.tasks_recyclerView);
@@ -66,11 +76,9 @@ public class TasksFragment extends Fragment {
 
 
     /**
-     * Get reference to recyclerView
-     *
      * Instantiate TaskAdapter
      *
-     * set adapter and LayoutManager
+     * Setup recyclerView
      */
     private void setupRecyclerViewWithAdapter() {
 
@@ -79,7 +87,20 @@ public class TasksFragment extends Fragment {
         tasksRecyclerView.setHasFixedSize(true);
         tasksRecyclerView.setAdapter(adapter);
 
-        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
+        // Swipe when finish task functionality
+        getItemTouchHelper().attachToRecyclerView(tasksRecyclerView);
+    }
+
+
+    /**
+     * Setup swipe when finish task functionality
+     *
+     * @return
+     */
+    @NonNull
+    private ItemTouchHelper getItemTouchHelper() {
+
+        return new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
             @Override
             public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder viewHolder1) {
                 return false;
@@ -88,9 +109,11 @@ public class TasksFragment extends Fragment {
             @Override
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
 
+                // Get task that was swiped
                 Task task = adapter.getTaskList().get(viewHolder.getAdapterPosition());
-                mViewModel.finishTask(task);
+                // Task is finished
+                mViewModel.TaskFinished(task);
             }
-        }).attachToRecyclerView(tasksRecyclerView);
+        });
     }
 }

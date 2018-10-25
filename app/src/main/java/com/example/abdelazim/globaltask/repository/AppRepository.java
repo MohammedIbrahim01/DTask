@@ -14,6 +14,7 @@ import com.example.abdelazim.globaltask.repository.model.Day;
 import com.example.abdelazim.globaltask.repository.model.DayWithAchievements;
 import com.example.abdelazim.globaltask.repository.model.Task;
 import com.example.abdelazim.globaltask.utils.AppExecutors;
+import com.example.abdelazim.globaltask.utils.AppFormatter;
 
 import java.util.Calendar;
 import java.util.List;
@@ -123,7 +124,7 @@ public class AppRepository {
 
         // Create day
         String header = calendar.get(Calendar.DAY_OF_MONTH) + "-" + calendar.get(Calendar.MONTH);
-        final Day day = new Day(dayOfYear, header);
+        final Day day = new Day(dayOfYear, AppFormatter.formatDate(task.getTime()));
         // Create achievement
         final Achievement achievement = new Achievement(task.getTitle(), task.getDescription(), dayOfYear);
 

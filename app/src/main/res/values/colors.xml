@@ -5,4 +5,5 @@
     <color name="colorAccent">#D81B60</color>
     <color name="colorDoneMark">#0000FF</color>
     <color name="colorNonDoneMark">#00FF00</color>
+    <color name="colorExpandableListHeader">#d7e9cd</color>
 </resources>

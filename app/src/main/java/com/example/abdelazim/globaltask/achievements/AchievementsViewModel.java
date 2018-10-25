@@ -8,9 +8,7 @@ import android.support.annotation.Nullable;
 
 import com.example.abdelazim.globaltask.repository.AppRepository;
 import com.example.abdelazim.globaltask.repository.model.Achievement;
-import com.example.abdelazim.globaltask.repository.model.Day;
 import com.example.abdelazim.globaltask.repository.model.DayWithAchievements;
-import com.example.abdelazim.globaltask.repository.model.Task;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -21,6 +19,13 @@ public class AchievementsViewModel extends ViewModel {
     private AppRepository repository;
     private AchievementAdapter adapter;
 
+
+    /**
+     * Set the AppRepository and taskAdapter
+     *
+     * @param repository AppRepository
+     * @param adapter    TaskAdapter
+     */
     public void start(AppRepository repository, AchievementAdapter adapter) {
 
         this.repository = repository;
@@ -28,9 +33,14 @@ public class AchievementsViewModel extends ViewModel {
     }
 
 
-    public void observe(LifecycleOwner owner) {
+    /**
+     * Observe DayWithAchievementsList changes
+     *
+     * @param owner LifecycleOwner
+     */
+    void observe(LifecycleOwner owner) {
 
-        getDayWithAchievements().observe(owner, new Observer<List<DayWithAchievements>>() {
+        repository.getDayWithAchievementsList().observe(owner, new Observer<List<DayWithAchievements>>() {
             @Override
             public void onChanged(@Nullable List<DayWithAchievements> dayWithAchievements) {
 
@@ -43,29 +53,16 @@ public class AchievementsViewModel extends ViewModel {
     }
 
 
-    private LiveData<List<DayWithAchievements>> getDayWithAchievements() {
-        return repository.getDayWithAchievementsList();
-    }
-
+    /**
+     * Pass dayWithAchievementsList to the adapter
+     *
+     * Then notifyAdapter
+     *
+     * @param dayWithAchievementsList
+     */
     private void displayAchievements(List<DayWithAchievements> dayWithAchievementsList) {
 
-        List<String> headerList = new ArrayList<>();
-        HashMap<String, List<Achievement>> listHashMap = new HashMap<>();
-
-        for (int i = 0; i < dayWithAchievementsList.size(); i++) {
-
-            DayWithAchievements currentDayWithAchievements = dayWithAchievementsList.get(i);
-            List<Achievement> currentDayAchievements = currentDayWithAchievements.achievementList;
-            String currentHeader = currentDayWithAchievements.day.getHeader();
-
-            headerList.add(currentHeader);
-
-            listHashMap.put(currentHeader, currentDayAchievements);
-        }
-
-        adapter.setHeaderList(headerList);
-        adapter.setListHashMap(listHashMap);
-
+        adapter.setDayWithAchievementsList(dayWithAchievementsList);
         adapter.notifyDataSetChanged();
     }
 }
