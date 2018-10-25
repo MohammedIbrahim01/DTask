@@ -7,6 +7,7 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.TextView;
 
 import com.example.abdelazim.globaltask.R;
+import com.example.abdelazim.globaltask.repository.model.Achievement;
 import com.example.abdelazim.globaltask.repository.model.Task;
 
 import java.util.ArrayList;
@@ -16,14 +17,14 @@ import java.util.List;
 class AchievementAdapter extends BaseExpandableListAdapter {
 
     private List<String> headerList = new ArrayList<>();
-    private HashMap<String, List<Task>> listHashMap = new HashMap<>();
+    private HashMap<String, List<Achievement>> listHashMap = new HashMap<>();
 
 
     public void setHeaderList(List<String> headerList) {
         this.headerList = headerList;
     }
 
-    public void setListHashMap(HashMap<String, List<Task>> listHashMap) {
+    public void setListHashMap(HashMap<String, List<Achievement>> listHashMap) {
         this.listHashMap = listHashMap;
     }
 
@@ -34,7 +35,7 @@ class AchievementAdapter extends BaseExpandableListAdapter {
 
     @Override
     public int getChildrenCount(int groupPosition) {
-        List<Task> taskList = listHashMap.get(headerList.get(groupPosition));
+        List<Achievement> taskList = listHashMap.get(headerList.get(groupPosition));
         if (taskList == null)
             return 0;
         return taskList.size();
@@ -47,10 +48,10 @@ class AchievementAdapter extends BaseExpandableListAdapter {
 
     @Override
     public Object getChild(int groupPosition, int childPosition) {
-        List<Task> taskList = listHashMap.get(headerList.get(groupPosition));
-        if (taskList == null)
+        List<Achievement> AchievementList = listHashMap.get(headerList.get(groupPosition));
+        if (AchievementList == null)
             return null;
-        return taskList.get(childPosition);
+        return AchievementList.get(childPosition);
     }
 
     @Override
@@ -91,9 +92,9 @@ class AchievementAdapter extends BaseExpandableListAdapter {
         if (convertView == null)
             convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_achievements_list, parent, false);
         ChildViewHolder viewHolder = new ChildViewHolder(convertView);
-        Task currentTask = (Task) getChild(groupPosition, childPosition);
-        viewHolder.setTitle(currentTask.getTitle());
-        viewHolder.setDescription(currentTask.getDescription());
+        Achievement currentAchievement = (Achievement) getChild(groupPosition, childPosition);
+        viewHolder.setTitle(currentAchievement.getTitle());
+        viewHolder.setDescription(currentAchievement.getDescription());
 
         return convertView;
     }

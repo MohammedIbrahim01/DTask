@@ -43,8 +43,8 @@ public class TasksViewModel extends ViewModel {
         adapter.notifyDataSetChanged();
     }
 
-    public void markAsDone(Task task) {
+    public void finishTask(Task task) {
 
-        repository.markAsDone(task);
+        repository.finishTask(task);
     }
 }

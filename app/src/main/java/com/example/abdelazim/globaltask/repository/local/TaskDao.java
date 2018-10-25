@@ -18,14 +18,8 @@ public interface TaskDao {
     @Query("SELECT * FROM task_table WHERE done = 0 ORDER BY time")
     LiveData<List<Task>> getTasks();
 
-    @Query("SELECT * FROM task_table WHERE done = 1 ORDER BY time")
-    LiveData<List<Task>> getAchievements();
-
     @Query("SELECT * FROM task_table WHERE id = :id")
     LiveData<Task> getTaskById(int id);
-
-    @Query("SELECT * FROM task_table WHERE id = :id AND done LIKE 0")
-    LiveData<Task> getAchievementById(int id);
 
     @Insert
     void insertTask(Task task);

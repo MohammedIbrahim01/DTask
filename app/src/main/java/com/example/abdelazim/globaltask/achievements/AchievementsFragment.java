@@ -40,15 +40,6 @@ public class AchievementsFragment extends Fragment {
         // Initialize Views
         initViews(view);
 
-        achievementsExpandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
-            @Override
-            public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
-                int index = parent.getFlatListPosition(ExpandableListView.getPackedPositionForChild(groupPosition, childPosition));
-                parent.setItemChecked(groupPosition, true);
-                return true;
-            }
-        });
-
         return view;
     }
 

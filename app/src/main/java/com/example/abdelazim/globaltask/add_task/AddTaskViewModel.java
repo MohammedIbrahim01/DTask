@@ -16,6 +16,6 @@ public class AddTaskViewModel extends ViewModel {
 
     public void saveTask(Task task) {
 
-        repository.saveTask(task);
+        repository.saveNewTask(task);
     }
 }

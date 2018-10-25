@@ -7,6 +7,9 @@ import android.arch.lifecycle.ViewModel;
 import android.support.annotation.Nullable;
 
 import com.example.abdelazim.globaltask.repository.AppRepository;
+import com.example.abdelazim.globaltask.repository.model.Achievement;
+import com.example.abdelazim.globaltask.repository.model.Day;
+import com.example.abdelazim.globaltask.repository.model.DayWithAchievements;
 import com.example.abdelazim.globaltask.repository.model.Task;
 
 import java.util.ArrayList;
@@ -27,29 +30,41 @@ public class AchievementsViewModel extends ViewModel {
 
     public void observe(LifecycleOwner owner) {
 
-        getAchievementsList().observe(owner, new Observer<List<Task>>() {
+        getDayWithAchievements().observe(owner, new Observer<List<DayWithAchievements>>() {
             @Override
-            public void onChanged(@Nullable List<Task> achievements) {
+            public void onChanged(@Nullable List<DayWithAchievements> dayWithAchievements) {
 
-                displayAchievements(achievements);
+                if (dayWithAchievements == null)
+                    return;
+
+                displayAchievements(dayWithAchievements);
             }
         });
     }
 
 
-    private LiveData<List<Task>> getAchievementsList() {
-        return repository.getAchievements();
+    private LiveData<List<DayWithAchievements>> getDayWithAchievements() {
+        return repository.getDayWithAchievementsList();
     }
 
-    private void displayAchievements(List<Task> achievements) {
+    private void displayAchievements(List<DayWithAchievements> dayWithAchievementsList) {
 
         List<String> headerList = new ArrayList<>();
-        headerList.add("23 October");
-        adapter.setHeaderList(headerList);
+        HashMap<String, List<Achievement>> listHashMap = new HashMap<>();
 
-        HashMap<String, List<Task>> hashMap = new HashMap<>();
-        hashMap.put(headerList.get(0), achievements);
-        adapter.setListHashMap(hashMap);
+        for (int i = 0; i < dayWithAchievementsList.size(); i++) {
+
+            DayWithAchievements currentDayWithAchievements = dayWithAchievementsList.get(i);
+            List<Achievement> currentDayAchievements = currentDayWithAchievements.achievementList;
+            String currentHeader = currentDayWithAchievements.day.getHeader();
+
+            headerList.add(currentHeader);
+
+            listHashMap.put(currentHeader, currentDayAchievements);
+        }
+
+        adapter.setHeaderList(headerList);
+        adapter.setListHashMap(listHashMap);
 
         adapter.notifyDataSetChanged();
     }

@@ -1,6 +1,5 @@
 package com.example.abdelazim.globaltask.tasks;
 
-import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -16,8 +15,6 @@ import android.view.ViewGroup;
 import com.example.abdelazim.globaltask.R;
 import com.example.abdelazim.globaltask.main.MainViewModel;
 import com.example.abdelazim.globaltask.repository.model.Task;
-
-import java.util.List;
 
 public class TasksFragment extends Fragment {
 
@@ -92,7 +89,7 @@ public class TasksFragment extends Fragment {
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
 
                 Task task = adapter.getTaskList().get(viewHolder.getAdapterPosition());
-                mViewModel.markAsDone(task);
+                mViewModel.finishTask(task);
             }
         }).attachToRecyclerView(tasksRecyclerView);
     }
