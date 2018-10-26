@@ -21,6 +21,8 @@
         <activity
             android:name=".settings.SettingsActivity"
             android:label="@string/title_activity_settings" />
+
+        <receiver android:name=".utils.NotificationPublisher" />
     </application>
 
 </manifest>

@@ -4,10 +4,12 @@ import android.arch.lifecycle.ViewModel;
 
 import com.example.abdelazim.globaltask.repository.AppRepository;
 import com.example.abdelazim.globaltask.repository.model.Task;
+import com.example.abdelazim.globaltask.utils.AppNotifications;
 
 public class AddTaskViewModel extends ViewModel {
 
     private AppRepository repository;
+    private AppNotifications appNotifications;
 
 
     /**
@@ -16,9 +18,10 @@ public class AddTaskViewModel extends ViewModel {
      * @param repository AppRepository
      */
 
-    void start(AppRepository repository) {
+    void start(AppRepository repository, AppNotifications appNotifications) {
 
         this.repository = repository;
+        this.appNotifications = appNotifications;
     }
 
 
@@ -31,9 +34,11 @@ public class AddTaskViewModel extends ViewModel {
      * @param description
      * @param timeInMillis
      */
-    public void saveNewTask(String title, String description, long timeInMillis) {
+    void saveNewTask(String title, String description, long timeInMillis) {
 
-        Task task = new Task(title, description, timeInMillis, false);
+        Task task = new Task(title, description, timeInMillis);
+
+        appNotifications.scheduleNewTask(task);
 
         repository.saveNewTask(task);
     }

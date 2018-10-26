@@ -15,16 +15,18 @@ import com.example.abdelazim.globaltask.repository.model.DayWithAchievements;
 import com.example.abdelazim.globaltask.repository.model.Task;
 import com.example.abdelazim.globaltask.utils.AppExecutors;
 import com.example.abdelazim.globaltask.utils.AppFormatter;
+import com.example.abdelazim.globaltask.utils.AppNotifications;
 
 import java.util.Calendar;
 import java.util.List;
-import java.util.Locale;
 
 public class AppRepository {
 
     // Database and executors
     private AppDatabase database;
     private AppExecutors executors;
+    // AppNotification
+    private AppNotifications appNotifications;
     // Data access objects
     private TaskDao taskDao;
     private AchievementsDao achievementDao;
@@ -47,8 +49,11 @@ public class AppRepository {
      */
     public AppRepository(Context applicationContext) {
 
+
         database = AppDatabase.getInstance(applicationContext);
         executors = AppExecutors.getInstance();
+
+        appNotifications = new AppNotifications(applicationContext);
 
         taskDao = database.taskDao();
         achievementDao = database.achievementsDao();
@@ -114,6 +119,9 @@ public class AppRepository {
 
 
     public void finishTask(final Task task) {
+
+        // Remove the task from alarmManager if still exists in case task is finished before its time
+        appNotifications.removeScheduledTask(task);
 
         final int dayOfYear;
 

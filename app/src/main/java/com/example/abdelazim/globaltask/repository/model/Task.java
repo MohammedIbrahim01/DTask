@@ -12,22 +12,19 @@ public class Task {
     private String title;
     private String description;
     private long time;
-    private boolean done;
 
     @Ignore
-    public Task(String title, String description, long time, boolean done) {
+    public Task(String title, String description, long time) {
         this.title = title;
         this.description = description;
         this.time = time;
-        this.done = done;
     }
 
-    public Task(int id, String title, String description, long time, boolean done) {
+    public Task(int id, String title, String description, long time) {
         this.id = id;
         this.title = title;
         this.description = description;
         this.time = time;
-        this.done = done;
     }
 
     public int getId() {
@@ -60,13 +57,5 @@ public class Task {
 
     public void setTime(long time) {
         this.time = time;
-    }
-
-    public boolean isDone() {
-        return done;
-    }
-
-    public void setDone(boolean done) {
-        this.done = done;
     }
 }

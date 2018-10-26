@@ -20,6 +20,7 @@ import com.example.abdelazim.globaltask.R;
 import com.example.abdelazim.globaltask.main.MainViewModel;
 import com.example.abdelazim.globaltask.repository.model.Task;
 import com.example.abdelazim.globaltask.utils.AppFormatter;
+import com.example.abdelazim.globaltask.utils.AppNotifications;
 
 import java.util.Calendar;
 
@@ -66,7 +67,7 @@ public class AddTaskFragment extends Fragment implements View.OnClickListener, T
         mViewModel = ViewModelProviders.of(this).get(AddTaskViewModel.class);
 
         // Start ViewModel
-        mViewModel.start(mainViewModel.getRepository());
+        mViewModel.start(mainViewModel.getRepository(), new AppNotifications(getContext()));
     }
 
     /**
