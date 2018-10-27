@@ -103,11 +103,7 @@ public class MainActivity extends AppCompatActivity implements MainViewModel.Mai
                 break;
 
             case 3:
-                // Display TasksFragment
-                fragmentManager.beginTransaction()
-                        .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right)
-                        .replace(R.id.main_frag_container, new TasksFragment())
-                        .commit();
+                fragmentManager.popBackStack();
                 break;
 
         }
