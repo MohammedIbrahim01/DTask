@@ -1,7 +1,99 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/tasks_recyclerView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".tasks.TasksFragment" />
+    tools:context=".tasks.TasksFragment">
+
+    <include layout="@layout/content_tasks_fragment" />
+
+    <com.robertlevonyan.views.customfloatingactionbutton.FloatingActionLayout
+        android:id="@+id/add_task_fab"
+        android:layout_width="wrap_content"
+        android:layout_height="32dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="16dp"
+        android:clickable="true"
+        android:focusable="true"
+        app:fabColor="@color/colorPrimary"
+        app:fabType="roundedSquare">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_gravity="center"
+                android:layout_margin="8dp"
+                android:src="@android:drawable/ic_input_add"
+                android:tint="@android:color/white" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginRight="16dp"
+                android:text="Add task"
+                android:textColor="@android:color/white"
+                android:textSize="20dp" />
+
+        </LinearLayout>
+
+    </com.robertlevonyan.views.customfloatingactionbutton.FloatingActionLayout>
+
+    <com.robertlevonyan.views.customfloatingactionbutton.FloatingActionLayout
+        android:id="@+id/done_fab"
+        android:layout_width="wrap_content"
+        android:layout_height="32dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="bottom|start"
+        android:layout_margin="16dp"
+        android:clickable="true"
+        android:focusable="true"
+        app:fabColor="@color/colorPrimary"
+        app:fabType="roundedSquare">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_gravity="center"
+                android:layout_margin="8dp"
+                android:tint="@android:color/white"
+                app:srcCompat="@drawable/ic_achievements" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginRight="16dp"
+                android:text="Done"
+                android:textColor="@android:color/white"
+                android:textSize="20dp" />
+
+
+        </LinearLayout>
+
+    </com.robertlevonyan.views.customfloatingactionbutton.FloatingActionLayout>
+</android.support.design.widget.CoordinatorLayout>

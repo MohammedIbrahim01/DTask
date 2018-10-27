@@ -27,98 +27,34 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class MainActivity extends AppCompatActivity implements MainViewModel.MainActivityView {
 
     // ViewModel
     MainViewModel mainViewModel;
     // FragmentManager instance variable
     private FragmentManager fragmentManager;
 
-    // Views
-    @BindView(R.id.add_task_fab)
-    FloatingActionLayout addTaskFab;
-    @BindView(R.id.done_fab)
-    FloatingActionLayout doneFab;
-    @BindView(R.id.tasks_fab)
-    FloatingActionLayout tasksFab;
-    @BindView(R.id.back_fab)
-    FloatingActionLayout backFab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        ButterKnife.bind(this);
+        // Get fragmentManager
+        fragmentManager = getSupportFragmentManager();
 
         // Get ViewModel
         mainViewModel = ViewModelProviders.of(this).get(MainViewModel.class);
 
         // Start ViewModel
-        mainViewModel.start(getApplicationContext());
+        mainViewModel.start(getApplicationContext(), this);
 
-        // Get fragmentManager
-        fragmentManager = getSupportFragmentManager();
+        // Display TasksFragment
+        mainViewModel.setScreen(1);
 
-        // Display TasksFragment as an start screen
-        fragmentManager.beginTransaction()
-                .replace(R.id.main_frag_container, new TasksFragment(), "tasks_frag")
-                .setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left)
-                .commit();
-        setFabsVisibility(1, 1, 0, 0);
-
-        // Handling clicks
-        addTaskFab.setOnClickListener(this);
-        doneFab.setOnClickListener(this);
-        tasksFab.setOnClickListener(this);
-        backFab.setOnClickListener(this);
-    }
+        // Observe
+        mainViewModel.observe(this);
 
 
-    private void setFabsVisibility(int done, int addTask, int back, int tasks) {
-
-        doneFab.setVisibility(done == 1 ? View.VISIBLE : View.GONE);
-        addTaskFab.setVisibility(addTask == 1 ? View.VISIBLE : View.GONE);
-        backFab.setVisibility(back == 1 ? View.VISIBLE : View.GONE);
-        tasksFab.setVisibility(tasks == 1 ? View.VISIBLE : View.GONE);
-    }
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.add_task_fab:
-                // Display AddTaskFragment
-                fragmentManager.beginTransaction()
-                        .setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_right)
-                        .addToBackStack(null)
-                        .replace(R.id.main_frag_container, new AddTaskFragment(), "add_task_frag")
-                        .commit();
-                setFabsVisibility(0, 0, 1, 0);
-                break;
-            case R.id.done_fab:
-                // Display AchievementsFragment
-                fragmentManager.beginTransaction()
-                        .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right)
-                        .replace(R.id.main_frag_container, new AchievementsFragment(), "achievements_frag")
-                        .commit();
-                setFabsVisibility(0, 0, 0, 1);
-                break;
-            case R.id.tasks_fab:
-                // Display TasksFragment
-                fragmentManager.beginTransaction()
-                        .setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left)
-                        .replace(R.id.main_frag_container, new TasksFragment(), "tasks_frag")
-                        .commit();
-                setFabsVisibility(1, 1, 0, 0);
-                break;
-            case R.id.back_fab:
-                // Display TasksFragment
-                fragmentManager.beginTransaction()
-                        .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right)
-                        .replace(R.id.main_frag_container, new TasksFragment(), "tasks_frag")
-                        .commit();
-                setFabsVisibility(1, 1, 0, 0);
-                break;
-        }
     }
 
     @Override
@@ -137,6 +73,43 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
+    public void display(int screen) {
+        switch (screen) {
+            case 0:
+                // Display AchievementsFragment
+                fragmentManager.beginTransaction()
+                        .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right)
+                        .replace(R.id.main_frag_container, new AchievementsFragment(), "achievements_frag")
+                        .commit();
+                break;
+            case 1:
+                // Display TasksFragment
+                fragmentManager.beginTransaction()
+                        .setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left)
+                        .replace(R.id.main_frag_container, new TasksFragment())
+                        .commit();
+                break;
+            case 2:
+                // Display AddTaskFragment
+                fragmentManager.beginTransaction()
+                        .setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_right)
+                        .addToBackStack(null)
+                        .replace(R.id.main_frag_container, new AddTaskFragment())
+                        .commit();
+                break;
+
+            case 3:
+                // Display TasksFragment
+                fragmentManager.beginTransaction()
+                        .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right)
+                        .replace(R.id.main_frag_container, new TasksFragment())
+                        .commit();
+                break;
+
         }
     }
 }

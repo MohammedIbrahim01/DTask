@@ -1,8 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ExpandableListView xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/achievements_expandableListView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:choiceMode="singleChoice"
-    tools:context=".achievements.AchievementsFragment" />
+    tools:context=".achievements.AchievementsFragment">
+
+    <include layout="@layout/content_achievements_fragment" />
+
+    <com.robertlevonyan.views.customfloatingactionbutton.FloatingActionLayout
+        android:id="@+id/tasks_fab"
+        android:layout_width="wrap_content"
+        android:layout_height="32dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="16dp"
+        android:clickable="true"
+        android:focusable="true"
+        app:fabColor="@color/colorPrimary"
+        app:fabType="roundedSquare">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginStart="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                android:text="tasks"
+                android:textColor="@android:color/white"
+                android:textSize="20sp" />
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center"
+                android:layout_margin="8dp"
+                android:scaleType="fitCenter"
+                android:tint="@android:color/white"
+                app:srcCompat="@drawable/ic_back" />
+
+        </LinearLayout>
+
+    </com.robertlevonyan.views.customfloatingactionbutton.FloatingActionLayout>
+</android.support.design.widget.CoordinatorLayout>

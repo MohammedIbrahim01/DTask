@@ -12,14 +12,20 @@ import android.widget.ExpandableListView;
 
 import com.example.abdelazim.globaltask.R;
 import com.example.abdelazim.globaltask.main.MainViewModel;
+import com.robertlevonyan.views.customfloatingactionbutton.FloatingActionLayout;
 
-public class AchievementsFragment extends Fragment {
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
+public class AchievementsFragment extends Fragment implements View.OnClickListener {
 
     // MainViewModel
     private MainViewModel mainViewModel;
     // ViewModel of this fragment
     private AchievementsViewModel mViewModel;
     // Views
+    @BindView(R.id.tasks_fab)
+    FloatingActionLayout tasksFab;
     private ExpandableListView achievementsExpandableListView;
     private AchievementAdapter adapter;
 
@@ -64,8 +70,12 @@ public class AchievementsFragment extends Fragment {
      */
     private void initViews(View view) {
 
+        ButterKnife.bind(this, view);
+
         achievementsExpandableListView = view.findViewById(R.id.achievements_expandableListView);
         setupExpandableListViewWithAdapter();
+
+        tasksFab.setOnClickListener(this);
     }
 
 
@@ -78,5 +88,14 @@ public class AchievementsFragment extends Fragment {
 
         adapter = new AchievementAdapter();
         achievementsExpandableListView.setAdapter(adapter);
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.tasks_fab:
+                mainViewModel.setScreen(1);
+                break;
+        }
     }
 }

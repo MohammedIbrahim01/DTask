@@ -1,90 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".add_task.AddTaskFragment">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+    <include layout="@layout/content_add_task_fragment" />
+
+    <com.robertlevonyan.views.customfloatingactionbutton.FloatingActionLayout
+        android:id="@+id/back_fab"
+        android:layout_width="wrap_content"
+        android:layout_height="32dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="bottom|start"
         android:layout_margin="16dp"
-        android:orientation="vertical">
+        android:clickable="true"
+        android:focusable="true"
+        app:fabColor="@color/colorPrimary"
+        app:fabType="roundedSquare">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_gravity="center_horizontal"
-            android:fontFamily="casual"
-            android:text="Add Task"
-            android:textSize="32sp" />
-
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <EditText
-                android:id="@+id/title_editText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Title" />
-        </android.support.design.widget.TextInputLayout>
-
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <EditText
-                android:id="@+id/description_editText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Description" />
-        </android.support.design.widget.TextInputLayout>
-
-        <Button
-            android:id="@+id/set_time_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="16dp"
-            android:text="set time" />
-
-        <RelativeLayout
-            android:id="@+id/time_layout"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="16dp"
-            android:gravity="center_horizontal">
+            android:layout_gravity="center"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_gravity="center"
+                android:layout_margin="8dp"
+                android:tint="@android:color/white"
+                app:srcCompat="@drawable/left_arrow" />
 
             <TextView
-                android:id="@+id/time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="casual"
-                android:text="Time :"
-                android:textSize="22sp" />
+                android:layout_gravity="center"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginRight="16dp"
+                android:text="Back"
+                android:textColor="@android:color/white"
+                android:textSize="20dp" />
 
-            <TextView
-                android:id="@+id/time_textView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignBaseline="@+id/time"
-                android:layout_marginStart="16dp"
-                android:layout_marginLeft="16dp"
-                android:layout_toEndOf="@+id/time"
-                android:layout_toRightOf="@+id/time"
-                android:textSize="18sp"
-                tools:text="12 : 59 am" />
-        </RelativeLayout>
 
-        <Button
-            android:id="@+id/save_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:text="save" />
+        </LinearLayout>
 
-    </LinearLayout>
-
-</ScrollView>
+    </com.robertlevonyan.views.customfloatingactionbutton.FloatingActionLayout>
+</android.support.design.widget.CoordinatorLayout>

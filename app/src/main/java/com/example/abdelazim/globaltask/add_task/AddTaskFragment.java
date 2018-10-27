@@ -21,8 +21,12 @@ import com.example.abdelazim.globaltask.main.MainViewModel;
 import com.example.abdelazim.globaltask.repository.model.Task;
 import com.example.abdelazim.globaltask.utils.AppFormatter;
 import com.example.abdelazim.globaltask.utils.AppNotifications;
+import com.robertlevonyan.views.customfloatingactionbutton.FloatingActionLayout;
 
 import java.util.Calendar;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class AddTaskFragment extends Fragment implements View.OnClickListener, TimePickerDialog.OnTimeSetListener {
 
@@ -39,6 +43,8 @@ public class AddTaskFragment extends Fragment implements View.OnClickListener, T
     private TextView timeTextView;
     private RelativeLayout timeLayout;
     private TimePickerDialog timePickerDialog;
+    @BindView(R.id.back_fab)
+    FloatingActionLayout backFab;
 
     public static AddTaskFragment newInstance() {
         return new AddTaskFragment();
@@ -79,6 +85,8 @@ public class AddTaskFragment extends Fragment implements View.OnClickListener, T
      */
     private void initViews(View view) {
 
+        ButterKnife.bind(this, view);
+
         titleEditText = view.findViewById(R.id.title_editText);
         descriptionEditText = view.findViewById(R.id.description_editText);
         setTimeButton = view.findViewById(R.id.set_time_button);
@@ -88,6 +96,7 @@ public class AddTaskFragment extends Fragment implements View.OnClickListener, T
 
         setTimeButton.setOnClickListener(this);
         saveButton.setOnClickListener(this);
+        backFab.setOnClickListener(this);
 
         setupTimeLayout(0, 0, false);
     }
@@ -137,7 +146,7 @@ public class AddTaskFragment extends Fragment implements View.OnClickListener, T
 
         mViewModel.saveNewTask(title, description, calendar.getTimeInMillis());
 
-        getActivity().getSupportFragmentManager().popBackStack();
+        mainViewModel.setScreen(3);
     }
 
 
@@ -157,6 +166,10 @@ public class AddTaskFragment extends Fragment implements View.OnClickListener, T
                     break;
                 }
                 saveNewTask();
+                break;
+
+            case R.id.back_fab:
+                mainViewModel.setScreen(3);
                 break;
         }
     }

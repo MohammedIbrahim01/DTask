@@ -15,14 +15,22 @@ import android.view.ViewGroup;
 import com.example.abdelazim.globaltask.R;
 import com.example.abdelazim.globaltask.main.MainViewModel;
 import com.example.abdelazim.globaltask.repository.model.Task;
+import com.robertlevonyan.views.customfloatingactionbutton.FloatingActionLayout;
 
-public class TasksFragment extends Fragment {
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
+public class TasksFragment extends Fragment implements View.OnClickListener {
 
     // MainViewModel
     private MainViewModel mainViewModel;
     // ViewModel of this fragment
     private TasksViewModel mViewModel;
     // Views
+    @BindView(R.id.add_task_fab)
+    FloatingActionLayout addTaskFab;
+    @BindView(R.id.done_fab)
+    FloatingActionLayout doneFab;
     private RecyclerView tasksRecyclerView;
     private TaskAdapter adapter;
 
@@ -70,8 +78,13 @@ public class TasksFragment extends Fragment {
      */
     private void initViews(View view) {
 
+        ButterKnife.bind(this, view);
+
         tasksRecyclerView = view.findViewById(R.id.tasks_recyclerView);
         setupRecyclerViewWithAdapter();
+
+        addTaskFab.setOnClickListener(this);
+        doneFab.setOnClickListener(this);
     }
 
 
@@ -115,5 +128,18 @@ public class TasksFragment extends Fragment {
                 mViewModel.TaskFinished(task);
             }
         });
+    }
+
+    @Override
+    public void onClick(View v) {
+
+        switch (v.getId()) {
+            case R.id.add_task_fab:
+                mainViewModel.setScreen(2);
+                break;
+            case R.id.done_fab:
+                mainViewModel.setScreen(0);
+                break;
+        }
     }
 }
