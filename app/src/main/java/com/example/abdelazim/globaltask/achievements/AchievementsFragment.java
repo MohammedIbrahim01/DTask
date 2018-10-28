@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ExpandableListView;
+import android.widget.RelativeLayout;
 
 import com.example.abdelazim.globaltask.R;
 import com.example.abdelazim.globaltask.main.MainViewModel;
@@ -17,7 +18,7 @@ import com.robertlevonyan.views.customfloatingactionbutton.FloatingActionLayout;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class AchievementsFragment extends Fragment implements View.OnClickListener {
+public class AchievementsFragment extends Fragment implements View.OnClickListener, AchievementsViewModel.AchievementView {
 
     // MainViewModel
     private MainViewModel mainViewModel;
@@ -26,6 +27,8 @@ public class AchievementsFragment extends Fragment implements View.OnClickListen
     // Views
     @BindView(R.id.tasks_fab)
     FloatingActionLayout tasksFab;
+    @BindView(R.id.no_achievements_view)
+    RelativeLayout noAchievementsView;
     private ExpandableListView achievementsExpandableListView;
     private AchievementAdapter adapter;
 
@@ -54,7 +57,7 @@ public class AchievementsFragment extends Fragment implements View.OnClickListen
         mViewModel = ViewModelProviders.of(this).get(AchievementsViewModel.class);
 
         // Start viewModel
-        mViewModel.start(mainViewModel.getRepository(), adapter);
+        mViewModel.start(mainViewModel.getRepository(), adapter, this);
 
         // Observe
         mViewModel.observe(this);
@@ -97,5 +100,19 @@ public class AchievementsFragment extends Fragment implements View.OnClickListen
                 mainViewModel.setScreen(1);
                 break;
         }
+    }
+
+    @Override
+    public void displayNoAchievementsView() {
+
+        noAchievementsView.setVisibility(View.VISIBLE);
+        achievementsExpandableListView.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void displayAchievementsView() {
+
+        noAchievementsView.setVisibility(View.GONE);
+        achievementsExpandableListView.setVisibility(View.VISIBLE);
     }
 }

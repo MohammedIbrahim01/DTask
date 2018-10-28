@@ -154,7 +154,7 @@ public class TasksFragment extends Fragment implements View.OnClickListener, Tas
     }
 
     @Override
-    public void displayTasksList() {
+    public void displayTasksView() {
 
         tasksRecyclerView.setVisibility(View.VISIBLE);
         noTasksView.setVisibility(View.GONE);

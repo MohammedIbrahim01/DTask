@@ -1,7 +1,6 @@
 package com.example.abdelazim.globaltask.tasks;
 
 import android.arch.lifecycle.LifecycleOwner;
-import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModel;
 import android.support.annotation.Nullable;
@@ -43,13 +42,12 @@ public class TasksViewModel extends ViewModel {
             @Override
             public void onChanged(@Nullable List<Task> tasks) {
 
-                // Re-display taskList whenever TaskList changed
-                displayTasks(tasks);
-                if (tasks == null || tasks.size() == 0)
+                if (tasks == null || tasks.size() == 0) {
                     view.displayNoTasksView();
-
-                else
-                    view.displayTasksList();
+                } else {
+                    view.displayTasksView();
+                    displayTasks(tasks);
+                }
             }
         });
     }
@@ -84,6 +82,6 @@ public class TasksViewModel extends ViewModel {
     public interface TasksView {
         void displayNoTasksView();
 
-        void displayTasksList();
+        void displayTasksView();
     }
 }

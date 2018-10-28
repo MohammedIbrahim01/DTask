@@ -1,6 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ExpandableListView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/achievements_expandableListView"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:choiceMode="singleChoice" />
+    android:layout_height="match_parent">
+
+    <ExpandableListView
+        android:id="@+id/achievements_expandableListView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:choiceMode="singleChoice" />
+
+    <RelativeLayout
+        android:id="@+id/no_achievements_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="24dp"
+            android:text="Zero Done"
+            android:textColor="@android:color/darker_gray"
+            android:textSize="32sp" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:alpha=".4"
+            android:src="@drawable/sad_man_0" />
+
+    </RelativeLayout>
+
+</RelativeLayout>

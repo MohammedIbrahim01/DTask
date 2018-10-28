@@ -1,23 +1,21 @@
 package com.example.abdelazim.globaltask.achievements;
 
 import android.arch.lifecycle.LifecycleOwner;
-import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModel;
 import android.support.annotation.Nullable;
+import android.util.Log;
 
 import com.example.abdelazim.globaltask.repository.AppRepository;
-import com.example.abdelazim.globaltask.repository.model.Achievement;
 import com.example.abdelazim.globaltask.repository.model.DayWithAchievements;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 public class AchievementsViewModel extends ViewModel {
 
     private AppRepository repository;
     private AchievementAdapter adapter;
+    private AchievementView view;
 
 
     /**
@@ -26,10 +24,11 @@ public class AchievementsViewModel extends ViewModel {
      * @param repository AppRepository
      * @param adapter    TaskAdapter
      */
-    public void start(AppRepository repository, AchievementAdapter adapter) {
+    public void start(AppRepository repository, AchievementAdapter adapter, AchievementView view) {
 
         this.repository = repository;
         this.adapter = adapter;
+        this.view = view;
     }
 
 
@@ -44,10 +43,13 @@ public class AchievementsViewModel extends ViewModel {
             @Override
             public void onChanged(@Nullable List<DayWithAchievements> dayWithAchievements) {
 
-                if (dayWithAchievements == null)
-                    return;
+                if (dayWithAchievements == null || dayWithAchievements.size() == 0) {
+                    view.displayNoAchievementsView();
+                } else {
+                    view.displayAchievementsView();
+                    displayAchievements(dayWithAchievements);
+                }
 
-                displayAchievements(dayWithAchievements);
             }
         });
     }
@@ -64,5 +66,12 @@ public class AchievementsViewModel extends ViewModel {
 
         adapter.setDayWithAchievementsList(dayWithAchievementsList);
         adapter.notifyDataSetChanged();
+    }
+
+    public interface AchievementView {
+
+        void displayNoAchievementsView();
+
+        void displayAchievementsView();
     }
 }
