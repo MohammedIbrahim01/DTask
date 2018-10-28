@@ -11,6 +11,7 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 
 import com.example.abdelazim.globaltask.R;
 import com.example.abdelazim.globaltask.main.MainViewModel;
@@ -20,7 +21,7 @@ import com.robertlevonyan.views.customfloatingactionbutton.FloatingActionLayout;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class TasksFragment extends Fragment implements View.OnClickListener {
+public class TasksFragment extends Fragment implements View.OnClickListener, TasksViewModel.TasksView {
 
     // MainViewModel
     private MainViewModel mainViewModel;
@@ -31,6 +32,8 @@ public class TasksFragment extends Fragment implements View.OnClickListener {
     FloatingActionLayout addTaskFab;
     @BindView(R.id.done_fab)
     FloatingActionLayout doneFab;
+    @BindView(R.id.no_tasks_view)
+    RelativeLayout noTasksView;
     private RecyclerView tasksRecyclerView;
     private TaskAdapter adapter;
 
@@ -62,7 +65,7 @@ public class TasksFragment extends Fragment implements View.OnClickListener {
         mViewModel = ViewModelProviders.of(this).get(TasksViewModel.class);
 
         // Start viewModel
-        mViewModel.start(mainViewModel.getRepository(), adapter);
+        mViewModel.start(mainViewModel.getRepository(), adapter, this);
 
         // Observe
         mViewModel.observe(this);
@@ -141,5 +144,19 @@ public class TasksFragment extends Fragment implements View.OnClickListener {
                 mainViewModel.setScreen(0);
                 break;
         }
+    }
+
+    @Override
+    public void displayNoTasksView() {
+
+        tasksRecyclerView.setVisibility(View.GONE);
+        noTasksView.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void displayTasksList() {
+
+        tasksRecyclerView.setVisibility(View.VISIBLE);
+        noTasksView.setVisibility(View.GONE);
     }
 }

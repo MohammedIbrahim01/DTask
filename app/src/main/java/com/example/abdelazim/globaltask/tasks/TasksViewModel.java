@@ -15,6 +15,7 @@ public class TasksViewModel extends ViewModel {
 
     private AppRepository repository;
     private TaskAdapter adapter;
+    private TasksView view;
 
 
     /**
@@ -23,10 +24,11 @@ public class TasksViewModel extends ViewModel {
      * @param repository AppRepository
      * @param adapter    TaskAdapter
      */
-    public void start(AppRepository repository, TaskAdapter adapter) {
+    public void start(AppRepository repository, TaskAdapter adapter, TasksView view) {
 
         this.repository = repository;
         this.adapter = adapter;
+        this.view = view;
     }
 
 
@@ -43,6 +45,11 @@ public class TasksViewModel extends ViewModel {
 
                 // Re-display taskList whenever TaskList changed
                 displayTasks(tasks);
+                if (tasks == null || tasks.size() == 0)
+                    view.displayNoTasksView();
+
+                else
+                    view.displayTasksList();
             }
         });
     }
@@ -72,5 +79,11 @@ public class TasksViewModel extends ViewModel {
     void TaskFinished(Task task) {
 
         repository.finishTask(task);
+    }
+
+    public interface TasksView {
+        void displayNoTasksView();
+
+        void displayTasksList();
     }
 }
