@@ -83,6 +83,8 @@ class AchievementAdapter extends BaseExpandableListAdapter {
         Day day = (Day) getGroup(groupPosition);
         // Populate UI
         viewHolder.setDate(day.getHeader());
+        viewHolder.setDoneNum(String.valueOf(getChildrenCount(groupPosition)));
+        viewHolder.setLateNum(String.valueOf(day.getLateNum()));
 
         return convertView;
     }
@@ -141,14 +143,24 @@ class AchievementAdapter extends BaseExpandableListAdapter {
      * Header ViewHolder
      */
     class HeaderViewHolder {
-        TextView dateTextView;
+        TextView dateTextView, lateNumTextView, doneNumTextView;
 
         HeaderViewHolder(View itemView) {
             dateTextView = itemView.findViewById(R.id.header_date_textView);
+            doneNumTextView = itemView.findViewById(R.id.header_done_numbers_textView);
+            lateNumTextView = itemView.findViewById(R.id.header_late_numbers_textView);
         }
 
         void setDate(String date) {
             dateTextView.setText(date);
+        }
+
+        void setDoneNum(String doneNum) {
+            doneNumTextView.setText(doneNum);
+        }
+
+        void setLateNum(String lateNum) {
+            lateNumTextView.setText(lateNum);
         }
     }
 

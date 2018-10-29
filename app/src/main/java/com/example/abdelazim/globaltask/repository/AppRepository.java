@@ -131,7 +131,6 @@ public class AppRepository {
         dayOfYear = calendar.get(Calendar.DAY_OF_YEAR);
 
         // Create day
-        String header = calendar.get(Calendar.DAY_OF_MONTH) + "-" + calendar.get(Calendar.MONTH);
         final Day day = new Day(dayOfYear, AppFormatter.formatDate(task.getTime()));
         // Create achievement
         final Achievement achievement = new Achievement(task.getTitle(), task.getDescription(), dayOfYear, task.getTime());
@@ -163,7 +162,6 @@ public class AppRepository {
                 }
 
                 dayDao.insertDay(day);
-                Log.d("WWW", "insert day");
             }
         });
     }
