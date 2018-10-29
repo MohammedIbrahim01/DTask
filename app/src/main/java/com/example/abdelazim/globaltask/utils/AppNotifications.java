@@ -21,7 +21,6 @@ import com.example.abdelazim.globaltask.repository.model.Task;
 public class AppNotifications {
 
     private static final String KEY_NOTIFICATION = "key-notification";
-    private static final String KEY_NOTIFICATION_ID = "key-notification-id";
     private static final String KEY_TASK_ID = "key-task-id";
 
     private static final String CHANNEL_NAME = "global-task";
@@ -55,7 +54,6 @@ public class AppNotifications {
         // Create intent and put notification and notification id as extra values
         Intent intent = new Intent(mContext, NotificationPublisher.class);
         intent.putExtra(KEY_NOTIFICATION, getNotification(task));
-        intent.putExtra(KEY_NOTIFICATION_ID, task.getId());
         intent.putExtra(KEY_TASK_ID, task.getId());
 
         PendingIntent pendingIntent = PendingIntent.getBroadcast(mContext, (int) task.getTime() % 100, intent, PendingIntent.FLAG_UPDATE_CURRENT);

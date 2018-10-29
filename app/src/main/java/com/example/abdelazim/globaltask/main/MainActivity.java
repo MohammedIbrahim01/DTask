@@ -83,7 +83,7 @@ public class MainActivity extends AppCompatActivity implements MainViewModel.Mai
                 // Display AchievementsFragment
                 fragmentManager.beginTransaction()
                         .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right)
-                        .replace(R.id.main_frag_container, new AchievementsFragment(), "achievements_frag")
+                        .replace(R.id.main_frag_container, new AchievementsFragment())
                         .commit();
                 break;
             case 1:

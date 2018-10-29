@@ -12,14 +12,12 @@ import com.example.abdelazim.globaltask.repository.model.Task;
 public class NotificationPublisher extends BroadcastReceiver {
 
     private static final String KEY_NOTIFICATION = "key-notification";
-    private static final String KEY_NOTIFICATION_ID = "key-notification-id";
     private static final String KEY_TASK_ID = "key-task-id";
 
     @Override
     public void onReceive(Context context, Intent intent) {
 
         Notification notification = intent.getParcelableExtra(KEY_NOTIFICATION);
-        int id = intent.getIntExtra(KEY_NOTIFICATION_ID, 0);
         int taskId = intent.getIntExtra(KEY_TASK_ID, 1000);
 
         // Mark the task as late
@@ -28,6 +26,6 @@ public class NotificationPublisher extends BroadcastReceiver {
 
         AppNotifications appNotifications = new AppNotifications(context);
 
-        appNotifications.notify(notification, id);
+        appNotifications.notify(notification, taskId);
     }
 }
