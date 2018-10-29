@@ -1,10 +1,14 @@
 package com.example.abdelazim.globaltask.tasks;
 
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffColorFilter;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.abdelazim.globaltask.R;
@@ -45,6 +49,8 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
         viewHolder.setTitle(task.getTitle());
         viewHolder.setDescription(task.getDescription());
         viewHolder.setTime(AppFormatter.formatTime(task.getTime()));
+        if (task.isLate())
+            viewHolder.markAsLate();
     }
 
     @Override
@@ -58,12 +64,14 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
      */
     class ViewHolder extends RecyclerView.ViewHolder {
         TextView taskTitleTextView, taskDescriptionTextView, taskTimeTextView;
+        LinearLayout rootView;
 
         ViewHolder(@NonNull View itemView) {
             super(itemView);
             taskTitleTextView = itemView.findViewById(R.id.task_title_textView);
             taskDescriptionTextView = itemView.findViewById(R.id.task_description_textView);
             taskTimeTextView = itemView.findViewById(R.id.task_time_textView);
+            rootView = itemView.findViewById(R.id.task_item_root_view);
         }
 
         void setTitle(String title) {
@@ -76,6 +84,10 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
 
         void setTime(String time) {
             taskTimeTextView.setText(time);
+        }
+
+        void markAsLate() {
+            rootView.getBackground().setColorFilter(new PorterDuffColorFilter(rootView.getResources().getColor(R.color.colorBgLateTask), PorterDuff.Mode.MULTIPLY));
         }
     }
 }

@@ -9,8 +9,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.os.Build;
 import android.support.v4.app.NotificationCompat;
+import android.util.Log;
 
 import com.example.abdelazim.globaltask.R;
 import com.example.abdelazim.globaltask.main.MainActivity;
@@ -20,6 +22,8 @@ public class AppNotifications {
 
     private static final String KEY_NOTIFICATION = "key-notification";
     private static final String KEY_NOTIFICATION_ID = "key-notification-id";
+    private static final String KEY_TASK_ID = "key-task-id";
+
     private static final String CHANNEL_NAME = "global-task";
     private static final String CHANNEL_ID = "global-task-channel-id";
 
@@ -52,6 +56,7 @@ public class AppNotifications {
         Intent intent = new Intent(mContext, NotificationPublisher.class);
         intent.putExtra(KEY_NOTIFICATION, getNotification(task));
         intent.putExtra(KEY_NOTIFICATION_ID, task.getId());
+        intent.putExtra(KEY_TASK_ID, task.getId());
 
         PendingIntent pendingIntent = PendingIntent.getBroadcast(mContext, (int) task.getTime() % 100, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
@@ -88,8 +93,10 @@ public class AppNotifications {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(mContext, CHANNEL_ID)
                 .setContentTitle(task.getTitle())
                 .setContentText(task.getDescription())
-                .setSmallIcon(R.drawable.fab_bg)
+                .setSmallIcon(R.drawable.notification_small)
                 .setLargeIcon(getLargeIcon())
+                .setColor(mContext.getResources().getColor(R.color.colorAccent))
+                .setLights(mContext.getResources().getColor(R.color.colorAccent), 500, 2000)
                 .setContentIntent(PendingIntent.getActivity(mContext, task.getId(), new Intent(mContext, MainActivity.class), PendingIntent.FLAG_UPDATE_CURRENT))
                 .setAutoCancel(true);
 
@@ -102,6 +109,6 @@ public class AppNotifications {
 
     private Bitmap getLargeIcon() {
 
-        return BitmapFactory.decodeResource(mContext.getResources(), R.drawable.done_mark);
+        return BitmapFactory.decodeResource(mContext.getResources(), R.drawable.notification_big);
     }
 }

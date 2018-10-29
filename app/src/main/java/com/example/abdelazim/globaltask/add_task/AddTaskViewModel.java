@@ -9,7 +9,6 @@ import com.example.abdelazim.globaltask.utils.AppNotifications;
 public class AddTaskViewModel extends ViewModel {
 
     private AppRepository repository;
-    private AppNotifications appNotifications;
 
 
     /**
@@ -21,7 +20,6 @@ public class AddTaskViewModel extends ViewModel {
     void start(AppRepository repository, AppNotifications appNotifications) {
 
         this.repository = repository;
-        this.appNotifications = appNotifications;
     }
 
 
@@ -37,8 +35,6 @@ public class AddTaskViewModel extends ViewModel {
     void saveNewTask(String title, String description, long timeInMillis) {
 
         Task task = new Task(title, description, timeInMillis);
-
-        appNotifications.scheduleNewTask(task);
 
         repository.saveNewTask(task);
     }

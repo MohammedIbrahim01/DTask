@@ -34,7 +34,7 @@ public class AppRepository {
     private DayWithAchievementsDao dayWithAchievementsDao;
 
     private LiveData<List<Task>> taskList;
-    private LiveData<List<Task>> achievementList;
+    private Task task;
     private LiveData<List<DayWithAchievements>> dayWithAchievementsList;
     // Singleton pattern variables
     private static final Object LOCK = new Object();
@@ -91,7 +91,11 @@ public class AppRepository {
         executors.diskIO.execute(new Runnable() {
             @Override
             public void run() {
-                database.taskDao().insertTask(task);
+                long id = database.taskDao().insertTask(task);
+
+                Task justAddedTask = database.taskDao().getTaskById((int) id);
+
+                appNotifications.scheduleNewTask(justAddedTask);
             }
         });
     }
@@ -186,5 +190,51 @@ public class AppRepository {
         });
         while (!dayWithAchievementFetched) ;
         return dayWithAchievementsList;
+    }
+
+
+    private volatile boolean taskFetched;
+
+    public Task getTask(final int taskId) {
+
+        taskFetched = false;
+
+        executors.diskIO.execute(new Runnable() {
+            @Override
+            public void run() {
+
+                task = taskDao.getTaskById(taskId);
+                taskFetched = true;
+            }
+        });
+        while (!taskFetched) Log.i("WWW", "waiting");
+        Log.i("WWW", "task title: " + task.getTitle());
+        return task;
+    }
+
+    public void markAsLate(final int id){
+
+        executors.diskIO.execute(new Runnable() {
+            @Override
+            public void run() {
+
+                Task task = taskDao.getTaskById(id);
+                task.setLate(true);
+                taskDao.updateTask(task);
+                Task task1 = taskDao.getTaskById(id);
+                Log.i("WWW", "state: " + task1.isLate());
+            }
+        });
+    }
+
+    public void updateTask(final Task task) {
+
+        executors.diskIO.execute(new Runnable() {
+            @Override
+            public void run() {
+
+                taskDao.updateTask(task);
+            }
+        });
     }
 }

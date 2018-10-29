@@ -12,6 +12,7 @@ public class Task {
     private String title;
     private String description;
     private long time;
+    private boolean late = false;
 
     @Ignore
     public Task(String title, String description, long time) {
@@ -57,5 +58,13 @@ public class Task {
 
     public void setTime(long time) {
         this.time = time;
+    }
+
+    public boolean isLate() {
+        return late;
+    }
+
+    public void setLate(boolean late) {
+        this.late = late;
     }
 }
