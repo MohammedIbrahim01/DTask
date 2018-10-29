@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="i_Dimen">2dp</dimen>
+    <dimen name="ii_Dimen">4dp</dimen>
+    <dimen name="I_Dimen">8dp</dimen>
+    <dimen name="II_Dimen">16dp</dimen>
+    <dimen name="III_Dimen">24dp</dimen>
+    <dimen name="IV_Dimen">32dp</dimen>
+</resources>

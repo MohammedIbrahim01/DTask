@@ -72,9 +72,9 @@ class AchievementAdapter extends BaseExpandableListAdapter {
 
         // Expanded header color effect
         if (isExpanded)
-            convertView.setBackgroundColor(parent.getResources().getColor(R.color.colorExpandableListHeader));
+            convertView.setBackgroundColor(parent.getResources().getColor(R.color.colorAchHeaderClicked));
         else
-            convertView.setBackgroundColor(parent.getResources().getColor(android.R.color.transparent));
+            convertView.setBackgroundColor(parent.getResources().getColor(R.color.colorAchHeader));
 
         // Header ViewHolder
         HeaderViewHolder viewHolder = new HeaderViewHolder(convertView);

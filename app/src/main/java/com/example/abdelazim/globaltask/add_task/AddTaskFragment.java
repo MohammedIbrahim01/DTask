@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -39,9 +40,9 @@ public class AddTaskFragment extends Fragment implements View.OnClickListener, T
 
     // Views
     private EditText titleEditText, descriptionEditText;
-    private Button setTimeButton, saveButton;
+    private Button saveButton;
     private TextView timeTextView;
-    private RelativeLayout timeLayout;
+    private ImageView editImageView;
     private TimePickerDialog timePickerDialog;
     @BindView(R.id.back_fab)
     FloatingActionLayout backFab;
@@ -89,36 +90,14 @@ public class AddTaskFragment extends Fragment implements View.OnClickListener, T
 
         titleEditText = view.findViewById(R.id.title_editText);
         descriptionEditText = view.findViewById(R.id.description_editText);
-        setTimeButton = view.findViewById(R.id.set_time_button);
         saveButton = view.findViewById(R.id.save_button);
         timeTextView = view.findViewById(R.id.time_textView);
-        timeLayout = view.findViewById(R.id.time_layout);
+        editImageView = view.findViewById(R.id.edit_imageView);
 
-        setTimeButton.setOnClickListener(this);
+        timeTextView.setOnClickListener(this);
+        editImageView.setOnClickListener(this);
         saveButton.setOnClickListener(this);
         backFab.setOnClickListener(this);
-
-        setupTimeLayout(0, 0, false);
-    }
-
-
-    /**
-     * If time was set hide setTime button
-     *
-     * Set text of timeTextView to the appropriate formatted time
-     *
-     * Display time layout
-     *
-     * @param hourOfDay
-     * @param minute
-     * @param visible
-     */
-    private void setupTimeLayout(int hourOfDay, int minute, boolean visible) {
-
-        timeTextView.setText(AppFormatter.formatTime(hourOfDay, minute));
-
-        setTimeButton.setVisibility(visible ? View.GONE : View.VISIBLE);
-        timeLayout.setVisibility(visible ? View.VISIBLE : View.GONE);
     }
 
 
@@ -155,7 +134,8 @@ public class AddTaskFragment extends Fragment implements View.OnClickListener, T
 
         switch (v.getId()) {
 
-            case R.id.set_time_button:
+            case R.id.time_textView:
+            case R.id.edit_imageView:
                 startPickTime();
                 break;
 
@@ -193,7 +173,7 @@ public class AddTaskFragment extends Fragment implements View.OnClickListener, T
         calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
         calendar.set(Calendar.MINUTE, minute);
         calendar.set(Calendar.SECOND, 0);
-
-        setupTimeLayout(hourOfDay, minute, true);
+        // Display formatted time
+        timeTextView.setText(AppFormatter.formatTime(hourOfDay, minute));
     }
 }

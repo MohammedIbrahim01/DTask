@@ -1,9 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#008577</color>
-    <color name="colorPrimaryDark">#00574B</color>
-    <color name="colorAccent">#D81B60</color>
-    <color name="colorDoneMark">#0000FF</color>
-    <color name="colorNonDoneMark">#00FF00</color>
-    <color name="colorExpandableListHeader">#d7e9cd</color>
+    <color name="colorPrimary">#03A9F4</color>
+    <color name="colorPrimaryDark">#0288D1</color>
+    <color name="colorAccent">#4DB6AC</color>
+    <color name="colorBg">#FFFFFF</color>
+    <color name="colorBgEt0">#f5f9fc</color>
+    <color name="colorBgEt1">#ECEFF1</color>
+    <color name="colorEtStrokes">#ced3d7</color>
+    <color name="colorDoneCircle">#4CAF50</color>
+    <color name="colorLateCircle">#F44336</color>
+    <color name="colorAchHeader">#80CBC4</color>
+    <color name="colorAchHeaderClicked">#4DB6AC</color>
+    <color name="colorAchItem">#B2DFDB</color>
+    <color name="colorTaskItem">#4DB6AC</color>
+    <color name="colorSpotText">#f55149</color>
+    <color name="colorBgBtn">#67b1d2</color>
 </resources>
