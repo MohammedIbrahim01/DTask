@@ -10,6 +10,7 @@ import com.example.abdelazim.globaltask.R;
 import com.example.abdelazim.globaltask.repository.model.Achievement;
 import com.example.abdelazim.globaltask.repository.model.Day;
 import com.example.abdelazim.globaltask.repository.model.DayWithAchievements;
+import com.example.abdelazim.globaltask.utils.AppFormatter;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -72,9 +73,9 @@ class AchievementAdapter extends BaseExpandableListAdapter {
 
         // Expanded header color effect
         if (isExpanded)
-            convertView.setBackgroundColor(parent.getResources().getColor(R.color.colorAchHeaderClicked));
+            convertView.setBackground(parent.getResources().getDrawable(R.drawable.bg_ach_header_expanded));
         else
-            convertView.setBackgroundColor(parent.getResources().getColor(R.color.colorAchHeader));
+            convertView.setBackground(parent.getResources().getDrawable(R.drawable.bg_ach_header));
 
         // Header ViewHolder
         HeaderViewHolder viewHolder = new HeaderViewHolder(convertView);
@@ -99,7 +100,7 @@ class AchievementAdapter extends BaseExpandableListAdapter {
         Achievement currentAchievement = (Achievement) getChild(groupPosition, childPosition);
         // Populate UI
         viewHolder.setTitle(currentAchievement.getTitle());
-        viewHolder.setDescription(currentAchievement.getDescription());
+        viewHolder.setTime(AppFormatter.formatTime(currentAchievement.getTime()));
 
         return convertView;
     }
@@ -156,19 +157,20 @@ class AchievementAdapter extends BaseExpandableListAdapter {
      * Child ViewHolder
      */
     class ChildViewHolder {
-        TextView achievementTitleTextView, achievementDescriptionTextView;
+        TextView achievementTitleTextView, achievementTimeTextView;
 
         ChildViewHolder(View itemView) {
             achievementTitleTextView = itemView.findViewById(R.id.achievement_title_textView);
-            achievementDescriptionTextView = itemView.findViewById(R.id.achievement_description_textView);
+            achievementTimeTextView = itemView.findViewById(R.id.achievement_time_textView);
         }
 
-        void setDescription(String description) {
-            achievementDescriptionTextView.setText(description);
-        }
 
         void setTitle(String title) {
             achievementTitleTextView.setText(title);
+        }
+
+        void setTime(String time) {
+            achievementTimeTextView.setText(time);
         }
     }
 

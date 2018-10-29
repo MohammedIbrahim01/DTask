@@ -10,7 +10,7 @@
     <color name="colorDoneCircle">#4CAF50</color>
     <color name="colorLateCircle">#F44336</color>
     <color name="colorAchHeader">#B2EBF2</color>
-    <color name="colorAchHeaderClicked">#80DEEA</color>
+    <color name="colorAchHeaderExpanded">#6acdda</color>
     <color name="colorAchItem">#E0F7FA</color>
     <color name="colorTaskItem">#B2EBF2</color>
     <color name="colorSpotText">#f55149</color>

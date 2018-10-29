@@ -7,7 +7,11 @@
         android:id="@+id/achievements_expandableListView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:choiceMode="singleChoice" />
+        android:childDivider="@drawable/child_divider"
+        android:choiceMode="singleChoice"
+        android:paddingLeft="@dimen/I_Dimen"
+        android:paddingTop="@dimen/I_Dimen"
+        android:paddingRight="@dimen/I_Dimen" />
 
     <RelativeLayout
         android:id="@+id/no_achievements_view"

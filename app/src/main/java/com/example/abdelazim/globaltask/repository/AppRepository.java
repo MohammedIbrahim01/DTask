@@ -134,7 +134,7 @@ public class AppRepository {
         String header = calendar.get(Calendar.DAY_OF_MONTH) + "-" + calendar.get(Calendar.MONTH);
         final Day day = new Day(dayOfYear, AppFormatter.formatDate(task.getTime()));
         // Create achievement
-        final Achievement achievement = new Achievement(task.getTitle(), task.getDescription(), dayOfYear);
+        final Achievement achievement = new Achievement(task.getTitle(), task.getDescription(), dayOfYear, task.getTime());
 
 
         /**

@@ -12,19 +12,22 @@ public class Achievement {
     private String title;
     private String description;
     private int day;
+    private long time;
 
     @Ignore
-    public Achievement(String title, String description, int day) {
+    public Achievement(String title, String description, int day, long time) {
         this.title = title;
         this.description = description;
         this.day = day;
+        this.time = time;
     }
 
-    public Achievement(int id, String title, String description, int day) {
+    public Achievement(int id, String title, String description, int day, long time) {
         this.id = id;
         this.title = title;
         this.description = description;
         this.day = day;
+        this.time = time;
     }
 
     public int getId() {
@@ -57,5 +60,13 @@ public class Achievement {
 
     public void setDay(int day) {
         this.day = day;
+    }
+
+    public long getTime() {
+        return time;
+    }
+
+    public void setTime(long time) {
+        this.time = time;
     }
 }
