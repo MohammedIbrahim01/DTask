@@ -38,7 +38,7 @@ public class AppFormatter {
         if (hourOfDay >= 13)
             hourOfDay -= 12;
 
-        return hourOfDay + " : " + minute + " " + AM_PM;
+        return hourOfDay + ":" + minute + " " + AM_PM;
     }
 
     public static String formatDate(long time) {

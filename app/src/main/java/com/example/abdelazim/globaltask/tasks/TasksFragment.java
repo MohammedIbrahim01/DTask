@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
@@ -102,6 +103,9 @@ public class TasksFragment extends Fragment implements View.OnClickListener, Tas
         tasksRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         tasksRecyclerView.setHasFixedSize(true);
         tasksRecyclerView.setAdapter(adapter);
+        DividerItemDecoration decoration = new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL);
+        decoration.setDrawable(getResources().getDrawable(R.drawable.divider));
+        tasksRecyclerView.addItemDecoration(decoration);
 
         // Swipe when finish task functionality
         getItemTouchHelper().attachToRecyclerView(tasksRecyclerView);

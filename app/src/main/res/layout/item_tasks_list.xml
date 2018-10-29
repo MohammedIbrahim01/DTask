@@ -1,40 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_task_item"
+    android:orientation="vertical"
+    android:paddingTop="@dimen/I_Dimen"
+    android:paddingBottom="@dimen/I_Dimen">
 
-    <TextView
-        android:id="@+id/task_title_textView"
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentLeft="true"
-        android:fontFamily="casual"
-        android:textSize="32sp"
-        tools:text="Title" />
+        android:paddingStart="@dimen/II_Dimen"
+        android:paddingLeft="@dimen/II_Dimen"
+        android:paddingEnd="@dimen/III_Dimen"
+        android:paddingRight="@dimen/III_Dimen">
 
-    <TextView
-        android:id="@+id/task_time_textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/task_title_textView"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:fontFamily="monospace"
-        android:textSize="20sp"
-        tools:text="12 : 59" />
+        <TextView
+            android:id="@+id/task_title_textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:fontFamily="casual"
+            android:textColor="@android:color/black"
+            android:textSize="34sp"
+            tools:text="Title" />
+
+        <TextView
+            android:id="@+id/task_time_textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/task_title_textView"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:fontFamily="monospace"
+            android:textColor="@color/colorSpotText"
+            android:textSize="24sp"
+            tools:text="12:59 am" />
+    </RelativeLayout>
 
     <TextView
         android:id="@+id/task_description_textView"
-        android:layout_width="250dp"
+        android:layout_width="260dp"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/task_title_textView"
-        android:layout_toEndOf="@+id/task_title_textView"
-        android:layout_toRightOf="@+id/task_title_textView"
+        android:layout_marginStart="48dp"
+        android:layout_marginLeft="48dp"
         android:ellipsize="end"
         android:singleLine="true"
         android:textSize="18sp"
-        tools:text="this is the descroption of the task" />
+        tools:text="this is the description of the task" />
 
-</RelativeLayout>
+</LinearLayout>

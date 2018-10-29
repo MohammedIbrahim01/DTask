@@ -80,13 +80,13 @@
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="64dp"
             android:layout_marginBottom="@dimen/IV_Dimen">
 
             <EditText
                 android:id="@+id/description_editText"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:background="@drawable/bg_et"
                 android:hint="Description" />
         </android.support.design.widget.TextInputLayout>

@@ -9,10 +9,10 @@
     <color name="colorEtStrokes">#ced3d7</color>
     <color name="colorDoneCircle">#4CAF50</color>
     <color name="colorLateCircle">#F44336</color>
-    <color name="colorAchHeader">#80CBC4</color>
-    <color name="colorAchHeaderClicked">#4DB6AC</color>
-    <color name="colorAchItem">#B2DFDB</color>
-    <color name="colorTaskItem">#4DB6AC</color>
+    <color name="colorAchHeader">#B2EBF2</color>
+    <color name="colorAchHeaderClicked">#80DEEA</color>
+    <color name="colorAchItem">#E0F7FA</color>
+    <color name="colorTaskItem">#B2EBF2</color>
     <color name="colorSpotText">#f55149</color>
     <color name="colorBgBtn">#67b1d2</color>
 </resources>
