@@ -16,4 +16,5 @@
     <color name="colorSpotText">#f55149</color>
     <color name="colorBgBtn">#67b1d2</color>
     <color name="colorBgLateTask">#78a0c4</color>
+    <!--<color name="notification_background_light">#B2EBF2</color>-->
 </resources>

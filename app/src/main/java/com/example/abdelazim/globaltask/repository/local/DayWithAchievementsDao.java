@@ -12,7 +12,7 @@ import java.util.List;
 @Dao
 public interface DayWithAchievementsDao {
 
-    @Query("SELECT * FROM day")
+    @Query("SELECT * FROM day ORDER BY day")
     @Transaction
     LiveData<List<DayWithAchievements>> getAllDayWithAchievements();
 }

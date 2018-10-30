@@ -13,7 +13,7 @@ import java.util.List;
 @Dao
 public interface AchievementsDao {
 
-    @Query("SELECT * FROM Achievement")
+    @Query("SELECT * FROM Achievement ORDER BY time")
     LiveData<List<Achievement>> getAllAchievements();
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

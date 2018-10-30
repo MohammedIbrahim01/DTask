@@ -9,10 +9,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.os.Build;
 import android.support.v4.app.NotificationCompat;
-import android.util.Log;
+import android.support.v4.content.ContextCompat;
 
 import com.example.abdelazim.globaltask.R;
 import com.example.abdelazim.globaltask.main.MainActivity;
@@ -91,10 +90,12 @@ public class AppNotifications {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(mContext, CHANNEL_ID)
                 .setContentTitle(task.getTitle())
                 .setContentText(task.getDescription())
+                .setStyle(new NotificationCompat.BigTextStyle().setBigContentTitle(task.getDescription()))
+                .setStyle(new NotificationCompat.BigPictureStyle().bigPicture(getLargeImage()).bigLargeIcon(null))
                 .setSmallIcon(R.drawable.notification_small)
                 .setLargeIcon(getLargeIcon())
-                .setColor(mContext.getResources().getColor(R.color.colorAccent))
-                .setLights(mContext.getResources().getColor(R.color.colorAccent), 500, 2000)
+                .setDefaults(NotificationCompat.DEFAULT_SOUND)
+                .setLights(ContextCompat.getColor(mContext, R.color.colorAccent), 500, 2000)
                 .setContentIntent(PendingIntent.getActivity(mContext, task.getId(), new Intent(mContext, MainActivity.class), PendingIntent.FLAG_UPDATE_CURRENT))
                 .setAutoCancel(true);
 
@@ -107,6 +108,11 @@ public class AppNotifications {
 
     private Bitmap getLargeIcon() {
 
-        return BitmapFactory.decodeResource(mContext.getResources(), R.drawable.notification_big);
+        return BitmapFactory.decodeResource(mContext.getResources(), R.mipmap.ic_dtask);
+    }
+
+    private Bitmap getLargeImage() {
+
+        return BitmapFactory.decodeResource(mContext.getResources(), R.mipmap.ic_notifiction_image);
     }
 }

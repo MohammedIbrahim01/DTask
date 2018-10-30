@@ -4,6 +4,9 @@
 
     <!-- Strings related to Settings -->
 
+    <string name="acc_notification_icon">notification_big</string>
+    <string name="acc_notification_accent_color">#B2EBF2</string>
+
     <!-- Example General settings -->
     <string name="pref_header_general">General</string>
 
