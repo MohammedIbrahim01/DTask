@@ -69,7 +69,6 @@ public class MainActivity extends AppCompatActivity implements MainViewModel.Mai
             case R.id.action_settings:
                 // Display SettingsFragment
                 startActivity(new Intent(MainActivity.this, SettingsActivity.class));
-                finish();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

@@ -12,14 +12,12 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.example.abdelazim.globaltask.R;
 import com.example.abdelazim.globaltask.main.MainViewModel;
-import com.example.abdelazim.globaltask.repository.model.Task;
 import com.example.abdelazim.globaltask.utils.AppFormatter;
 import com.example.abdelazim.globaltask.utils.AppNotifications;
 import com.robertlevonyan.views.customfloatingactionbutton.FloatingActionLayout;
@@ -88,11 +86,15 @@ public class AddTaskFragment extends Fragment implements View.OnClickListener, T
 
         ButterKnife.bind(this, view);
 
+        calendar = Calendar.getInstance();
+
         titleEditText = view.findViewById(R.id.title_editText);
         descriptionEditText = view.findViewById(R.id.description_editText);
         saveButton = view.findViewById(R.id.save_button);
         timeTextView = view.findViewById(R.id.time_textView);
         editImageView = view.findViewById(R.id.edit_imageView);
+
+        timeTextView.setText(AppFormatter.formatTime(calendar.getTimeInMillis()));
 
         timeTextView.setOnClickListener(this);
         editImageView.setOnClickListener(this);
@@ -140,11 +142,7 @@ public class AddTaskFragment extends Fragment implements View.OnClickListener, T
                 break;
 
             case R.id.save_button:
-                // Check if calendar is null meaning that the user didn't set time yet
-                if (calendar == null) {
-                    Toast.makeText(getContext(), "don't forget to set time", Toast.LENGTH_SHORT).show();
-                    break;
-                }
+                if (thereIsEmptyFields()) break;
                 saveNewTask();
                 break;
 
@@ -152,6 +150,30 @@ public class AddTaskFragment extends Fragment implements View.OnClickListener, T
                 mainViewModel.setScreen(3);
                 break;
         }
+    }
+
+    private boolean thereIsEmptyFields() {
+        if (titleEditText.getText().toString().isEmpty()) {
+            titleEditText.setError("Task title is required");
+            titleEditText.requestFocus();
+            return true;
+        }
+        if (descriptionEditText.getText().toString().isEmpty()) {
+            descriptionEditText.setError("Task description is required");
+            descriptionEditText.requestFocus();
+            return true;
+        }
+        if (descriptionEditText.getText().toString().length() < 10) {
+            descriptionEditText.setError("Task description is too short");
+            descriptionEditText.requestFocus();
+            return true;
+        }
+        // Check if calendar is null meaning that the user didn't set time yet
+        if (calendar == null) {
+            Toast.makeText(getContext(), "don't forget to set time", Toast.LENGTH_SHORT).show();
+            return true;
+        }
+        return false;
     }
 
 

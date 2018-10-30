@@ -9,6 +9,7 @@ public class AppFormatter {
     public static String formatTime(int hourOfDay, int minute) {
 
         String AM_PM = " am";
+        String formattedMinute = "";
 
         // Starting from 12 follow it by pm
         if (hourOfDay >= 12)
@@ -16,8 +17,13 @@ public class AppFormatter {
         // Starting from 13 decrease by 12
         if (hourOfDay >= 13)
             hourOfDay -= 12;
+        // Format minute 3 to be 03
+        if (minute < 10)
+            formattedMinute = "0" + minute;
+        else
+            formattedMinute = String.valueOf(minute);
 
-        return hourOfDay + " : " + minute + " " + AM_PM;
+        return hourOfDay + ":" + formattedMinute + " " + AM_PM;
     }
 
     public static String formatTime(long time) {
@@ -30,6 +36,7 @@ public class AppFormatter {
         int minute = calendar.get(Calendar.MINUTE);
 
         String AM_PM = " am";
+        String formattedMinute = "";
 
         // Starting from 12 follow it by pm
         if (hourOfDay >= 12)
@@ -37,8 +44,13 @@ public class AppFormatter {
         // Starting from 13 decrease by 12
         if (hourOfDay >= 13)
             hourOfDay -= 12;
+        // Format minute 3 to be 03
+        if (minute < 10)
+            formattedMinute = "0" + minute;
+        else
+            formattedMinute = String.valueOf(minute);
 
-        return hourOfDay + ":" + minute + " " + AM_PM;
+        return hourOfDay + ":" + formattedMinute + " " + AM_PM;
     }
 
     public static String formatDate(long time) {
