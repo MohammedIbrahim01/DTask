@@ -28,15 +28,11 @@ public class AppScheduler {
         alarmManager.setRepeating(AlarmManager.RTC, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
     }
 
-    public void scheduleFillTasksNotification() {
+    public void scheduleFillTasksNotification(long wakeupTime) {
 
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.HOUR_OF_DAY, 8);
-        calendar.set(Calendar.MINUTE, 0);
-        calendar.set(Calendar.SECOND, 0);
         Intent intent = new Intent(context, NotificationPublisher.class);
         intent.putExtra("action", "wakeupNotification");
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 1077, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-        alarmManager.setRepeating(AlarmManager.RTC, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
+        alarmManager.setRepeating(AlarmManager.RTC, wakeupTime, AlarmManager.INTERVAL_DAY, pendingIntent);
     }
 }

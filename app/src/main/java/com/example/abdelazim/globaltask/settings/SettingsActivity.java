@@ -23,7 +23,7 @@ public class SettingsActivity extends AppCompatActivity {
 
         // Display SettingsFragment
         fragmentManager.beginTransaction()
-                .replace(R.id.settings_frag_container, new SettingsFragment())
+                .replace(R.id.settings_frag_container, SettingsFragment.newInstance())
                 .commit();
 
         // Setup actionbar
@@ -44,8 +44,8 @@ public class SettingsActivity extends AppCompatActivity {
 
         if (item.getItemId() == android.R.id.home) {
 
-            startActivity(new Intent(SettingsActivity.this, MainActivity.class));
             finish();
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }
