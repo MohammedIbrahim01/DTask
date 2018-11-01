@@ -14,25 +14,32 @@ public class NotificationPublisher extends BroadcastReceiver {
     private static final String KEY_NOTIFICATION = "key-notification";
     private static final String KEY_TASK_ID = "key-task-id";
 
+    private AppNotifications appNotifications;
+
     @Override
     public void onReceive(Context context, Intent intent) {
 
-        if (intent.hasExtra("action")) {
+        appNotifications = new AppNotifications(context);
 
-            AppNotifications appNotifications = new AppNotifications(context);
-            appNotifications.notifyWakeup();
-            return;
+        if (intent.hasExtra(AppConstants.NOTIFICATION_PUBLISHER_ACTION)) {
+
+            String action = intent.getStringExtra(AppConstants.NOTIFICATION_PUBLISHER_ACTION);
+            if (action.equals(AppConstants.WAKEUP_NOTIFICATION)) {
+
+                appNotifications.notifyWakeup();
+
+            } else if (action.equals(AppConstants.TASK_TIME_NOTIFICATION)) {
+
+                Notification notification = intent.getParcelableExtra(KEY_NOTIFICATION);
+                int taskId = intent.getIntExtra(KEY_TASK_ID, 1000);
+
+                // Mark the task as late
+                AppRepository repository = new AppRepository(context);
+                repository.markAsLate(taskId);
+
+
+                appNotifications.notify(notification, taskId);
+            }
         }
-
-        Notification notification = intent.getParcelableExtra(KEY_NOTIFICATION);
-        int taskId = intent.getIntExtra(KEY_TASK_ID, 1000);
-
-        // Mark the task as late
-        AppRepository repository = new AppRepository(context);
-        repository.markAsLate(taskId);
-
-        AppNotifications appNotifications = new AppNotifications(context);
-
-        appNotifications.notify(notification, taskId);
     }
 }

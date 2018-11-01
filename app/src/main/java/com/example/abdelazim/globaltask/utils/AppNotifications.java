@@ -59,6 +59,7 @@ public class AppNotifications {
 
         // Create intent and put notification and notification id as extra values
         Intent intent = new Intent(mContext, NotificationPublisher.class);
+        intent.putExtra(AppConstants.NOTIFICATION_PUBLISHER_ACTION, AppConstants.TASK_TIME_NOTIFICATION);
         intent.putExtra(KEY_NOTIFICATION, getNotification(task));
         intent.putExtra(KEY_TASK_ID, task.getId());
 
@@ -115,7 +116,6 @@ public class AppNotifications {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(mContext, CHANNEL_ID)
                 .setContentTitle("Time to set some Tasks")
                 .setContentText("take a few moment to fill tasks list will make your day more organized")
-                .setStyle(new NotificationCompat.BigTextStyle().setBigContentTitle("take a few moment to fill tasks list will make your day more organized"))
                 .setSmallIcon(R.drawable.notification_small)
                 .setLargeIcon(getLargeIcon())
                 .setDefaults(NotificationCompat.DEFAULT_SOUND)

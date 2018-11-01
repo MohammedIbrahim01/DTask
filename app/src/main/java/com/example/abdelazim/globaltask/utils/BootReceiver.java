@@ -19,6 +19,6 @@ public class BootReceiver extends BroadcastReceiver {
 
         AppScheduler appScheduler = new AppScheduler(context);
         appScheduler.scheduleTasksCleaner();
-        appScheduler.scheduleFillTasksNotification(sharedPreferences.getLong(KEY_WAKEUP_TIME, Calendar.getInstance().getTimeInMillis()));
+        appScheduler.scheduleWakeupNotification(sharedPreferences.getLong(KEY_WAKEUP_TIME, Calendar.getInstance().getTimeInMillis()));
     }
 }

@@ -17,7 +17,7 @@ public class AddTaskViewModel extends ViewModel {
      * @param repository AppRepository
      */
 
-    void start(AppRepository repository, AppNotifications appNotifications) {
+    void start(AppRepository repository) {
 
         this.repository = repository;
     }

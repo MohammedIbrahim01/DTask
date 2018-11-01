@@ -35,7 +35,9 @@ public class TasksFragment extends Fragment implements View.OnClickListener, Tas
     FloatingActionLayout doneFab;
     @BindView(R.id.no_tasks_view)
     RelativeLayout noTasksView;
-    private RecyclerView tasksRecyclerView;
+    @BindView(R.id.tasks_recyclerView)
+    RecyclerView tasksRecyclerView;
+
     private TaskAdapter adapter;
 
 
@@ -84,7 +86,6 @@ public class TasksFragment extends Fragment implements View.OnClickListener, Tas
 
         ButterKnife.bind(this, view);
 
-        tasksRecyclerView = view.findViewById(R.id.tasks_recyclerView);
         setupRecyclerViewWithAdapter();
 
         addTaskFab.setOnClickListener(this);

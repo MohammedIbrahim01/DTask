@@ -1,8 +1,8 @@
 package com.example.abdelazim.globaltask.achievements;
 
-import android.graphics.ColorFilter;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +19,9 @@ import com.example.abdelazim.globaltask.utils.AppFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 class AchievementAdapter extends BaseExpandableListAdapter {
 
@@ -49,7 +52,7 @@ class AchievementAdapter extends BaseExpandableListAdapter {
     public Object getChild(int groupPosition, int childPosition) {
         List<Achievement> achievementList = dayAchievementsHashMap.get(dayList.get(groupPosition));
         if (achievementList == null)
-            return "null";
+            return 0;
         return achievementList.get(childPosition);
     }
 
@@ -71,7 +74,7 @@ class AchievementAdapter extends BaseExpandableListAdapter {
     @Override
     public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
 
-        // Recycling View
+        // Recycling
         if (convertView == null)
             convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.header_achievements_list, parent, false);
 
@@ -149,12 +152,18 @@ class AchievementAdapter extends BaseExpandableListAdapter {
      * Header ViewHolder
      */
     class HeaderViewHolder {
-        TextView dateTextView, lateNumTextView, doneNumTextView;
+        @BindView(R.id.header_date_textView)
+        TextView dateTextView;
+        @BindView(R.id.header_done_numbers_textView)
+        TextView lateNumTextView;
+        @BindView(R.id.header_late_numbers_textView)
+        TextView doneNumTextView;
 
         HeaderViewHolder(View itemView) {
+//            ButterKnife.bind(fragment, itemView);
             dateTextView = itemView.findViewById(R.id.header_date_textView);
-            doneNumTextView = itemView.findViewById(R.id.header_done_numbers_textView);
             lateNumTextView = itemView.findViewById(R.id.header_late_numbers_textView);
+            doneNumTextView = itemView.findViewById(R.id.header_done_numbers_textView);
         }
 
         void setDate(String date) {
@@ -175,10 +184,15 @@ class AchievementAdapter extends BaseExpandableListAdapter {
      * Child ViewHolder
      */
     class ChildViewHolder {
-        TextView achievementTitleTextView, achievementTimeTextView;
+        @BindView(R.id.achievement_title_textView)
+        TextView achievementTitleTextView;
+        @BindView(R.id.achievement_time_textView)
+        TextView achievementTimeTextView;
+        @BindView(R.id.ach_root_view)
         LinearLayout achRootView;
 
         ChildViewHolder(View itemView) {
+//            ButterKnife.bind(fragment, itemView);
             achievementTitleTextView = itemView.findViewById(R.id.achievement_title_textView);
             achievementTimeTextView = itemView.findViewById(R.id.achievement_time_textView);
             achRootView = itemView.findViewById(R.id.ach_root_view);

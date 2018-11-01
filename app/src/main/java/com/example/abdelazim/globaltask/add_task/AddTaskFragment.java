@@ -12,7 +12,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -20,7 +19,6 @@ import android.widget.Toast;
 import com.example.abdelazim.globaltask.R;
 import com.example.abdelazim.globaltask.main.MainViewModel;
 import com.example.abdelazim.globaltask.utils.AppFormatter;
-import com.example.abdelazim.globaltask.utils.AppNotifications;
 import com.robertlevonyan.views.customfloatingactionbutton.FloatingActionLayout;
 
 import java.util.Calendar;
@@ -34,18 +32,29 @@ public class AddTaskFragment extends Fragment implements View.OnClickListener, T
     private MainViewModel mainViewModel;
     // ViewModel of this fragment
     private AddTaskViewModel mViewModel;
-
+    // ViewModel
     private Calendar calendar;
 
     // Views
-    private EditText titleEditText, descriptionEditText;
-    private Button saveButton;
-    private TextView timeTextView;
-    private ImageView editImageView;
-    private TimePickerDialog timePickerDialog;
+    @BindView(R.id.title_editText)
+    EditText titleEditText;
+    @BindView(R.id.description_editText)
+    EditText descriptionEditText;
+    @BindView(R.id.save_button)
+    Button saveButton;
+    @BindView(R.id.time_textView)
+    TextView timeTextView;
+    @BindView(R.id.edit_imageView)
+    ImageView editImageView;
     @BindView(R.id.back_fab)
     FloatingActionLayout backFab;
 
+    private TimePickerDialog timePickerDialog;
+
+
+    /**
+     * @return new Instance of AddTaskFragment
+     */
     public static AddTaskFragment newInstance() {
         return new AddTaskFragment();
     }
@@ -73,7 +82,7 @@ public class AddTaskFragment extends Fragment implements View.OnClickListener, T
         mViewModel = ViewModelProviders.of(this).get(AddTaskViewModel.class);
 
         // Start ViewModel
-        mViewModel.start(mainViewModel.getRepository(), new AppNotifications(getContext()));
+        mViewModel.start(mainViewModel.getRepository());
     }
 
     /**
@@ -88,17 +97,7 @@ public class AddTaskFragment extends Fragment implements View.OnClickListener, T
         ButterKnife.bind(this, view);
 
         // Set the initial time to display in the time textView
-        calendar = Calendar.getInstance();
-        calendar.set(Calendar.HOUR_OF_DAY, calendar.get(Calendar.HOUR_OF_DAY) + 1);
-        calendar.set(Calendar.MINUTE, 0);
-        calendar.set(Calendar.SECOND, 0);
-
-        titleEditText = view.findViewById(R.id.title_editText);
-        descriptionEditText = view.findViewById(R.id.description_editText);
-        saveButton = view.findViewById(R.id.save_button);
-        timeTextView = view.findViewById(R.id.time_textView);
-        editImageView = view.findViewById(R.id.edit_imageView);
-
+        Calendar calendar = Calendar.getInstance();
         timeTextView.setText(AppFormatter.formatTime(calendar.getTimeInMillis()));
 
         timeTextView.setOnClickListener(this);
@@ -112,6 +111,7 @@ public class AddTaskFragment extends Fragment implements View.OnClickListener, T
      * Display PickTimeDialog
      */
     private void startPickTime() {
+        calendar = Calendar.getInstance();
         timePickerDialog = new TimePickerDialog(getContext(), this, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), false);
         timePickerDialog.show();
     }
@@ -161,19 +161,17 @@ public class AddTaskFragment extends Fragment implements View.OnClickListener, T
             titleEditText.setError("Task title is required");
             titleEditText.requestFocus();
             return true;
-        }
-        if (descriptionEditText.getText().toString().isEmpty()) {
+        } else if (descriptionEditText.getText().toString().isEmpty()) {
             descriptionEditText.setError("Task description is required");
             descriptionEditText.requestFocus();
             return true;
-        }
-        if (descriptionEditText.getText().toString().length() < 10) {
+        } else if (descriptionEditText.getText().toString().length() < 10) {
             descriptionEditText.setError("Task description is too short");
             descriptionEditText.requestFocus();
             return true;
         }
         // Check if calendar is null meaning that the user didn't set time yet
-        if (calendar == null) {
+        else if (calendar == null) {
             Toast.makeText(getContext(), "don't forget to set time", Toast.LENGTH_SHORT).show();
             return true;
         }

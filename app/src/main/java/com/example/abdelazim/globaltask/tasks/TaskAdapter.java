@@ -3,8 +3,8 @@ package com.example.abdelazim.globaltask.tasks;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,10 +18,14 @@ import com.example.abdelazim.globaltask.utils.AppFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
 
 
     private List<Task> taskList = new ArrayList<>();
+
 
     // Setter and Getter for taskList
     List<Task> getTaskList() {
@@ -63,11 +67,18 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
      * Item ViewHolder
      */
     class ViewHolder extends RecyclerView.ViewHolder {
-        TextView taskTitleTextView, taskDescriptionTextView, taskTimeTextView;
+        @BindView(R.id.task_title_textView)
+        TextView taskTitleTextView;
+        @BindView(R.id.task_description_textView)
+        TextView taskDescriptionTextView;
+        @BindView(R.id.task_time_textView)
+        TextView taskTimeTextView;
+        @BindView(R.id.task_item_root_view)
         LinearLayout rootView;
 
         ViewHolder(@NonNull View itemView) {
             super(itemView);
+//            ButterKnife.bind(fragment, itemView);
             taskTitleTextView = itemView.findViewById(R.id.task_title_textView);
             taskDescriptionTextView = itemView.findViewById(R.id.task_description_textView);
             taskTimeTextView = itemView.findViewById(R.id.task_time_textView);

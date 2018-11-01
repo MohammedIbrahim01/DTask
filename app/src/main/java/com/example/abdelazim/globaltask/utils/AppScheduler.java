@@ -4,10 +4,12 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.support.annotation.NonNull;
 
 import java.util.Calendar;
 
 public class AppScheduler {
+
 
     Context context;
     AlarmManager alarmManager;
@@ -17,22 +19,33 @@ public class AppScheduler {
         this.alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
     }
 
+
+    /**
+     * Fire receiver at the end of every day
+     *
+     * To clean the late tasks
+     */
     public void scheduleTasksCleaner() {
 
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.HOUR_OF_DAY, 23);
-        calendar.set(Calendar.MINUTE, 59);
-        calendar.set(Calendar.SECOND, 59);
+        Calendar calendar = AppTime.getCalendar(23, 0, 0);
         Intent intent = new Intent(context, TasksCleaner.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 1066, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, AppConstants.RC_TASKS_CLEANER_PI, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         alarmManager.setRepeating(AlarmManager.RTC, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
     }
 
-    public void scheduleFillTasksNotification(long wakeupTime) {
+
+    /**
+     * Fire receiver at the wakeup time
+     *
+     * To notify the user to set day tasks
+     *
+     * @param wakeupTime
+     */
+    public void scheduleWakeupNotification(long wakeupTime) {
 
         Intent intent = new Intent(context, NotificationPublisher.class);
-        intent.putExtra("action", "wakeupNotification");
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 1077, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        intent.putExtra(AppConstants.NOTIFICATION_PUBLISHER_ACTION, AppConstants.WAKEUP_NOTIFICATION);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, AppConstants.RC_WAKEUP_NOTIFICATION_PI, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         alarmManager.setRepeating(AlarmManager.RTC, wakeupTime, AlarmManager.INTERVAL_DAY, pendingIntent);
     }
 }

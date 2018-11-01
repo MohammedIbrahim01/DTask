@@ -193,26 +193,7 @@ public class AppRepository {
     }
 
 
-    private volatile boolean taskFetched;
-
-    public Task getTask(final int taskId) {
-
-        taskFetched = false;
-
-        executors.diskIO.execute(new Runnable() {
-            @Override
-            public void run() {
-
-                task = taskDao.getTaskById(taskId);
-                taskFetched = true;
-            }
-        });
-        while (!taskFetched) Log.i("WWW", "waiting");
-        Log.i("WWW", "task title: " + task.getTitle());
-        return task;
-    }
-
-    public void markAsLate(final int id){
+    public void markAsLate(final int id) {
 
         executors.diskIO.execute(new Runnable() {
             @Override
@@ -222,18 +203,6 @@ public class AppRepository {
                 task.setLate(true);
                 taskDao.updateTask(task);
                 Task task1 = taskDao.getTaskById(id);
-                Log.i("WWW", "state: " + task1.isLate());
-            }
-        });
-    }
-
-    public void updateTask(final Task task) {
-
-        executors.diskIO.execute(new Runnable() {
-            @Override
-            public void run() {
-
-                taskDao.updateTask(task);
             }
         });
     }

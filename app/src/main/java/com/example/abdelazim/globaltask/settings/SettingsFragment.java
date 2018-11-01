@@ -15,18 +15,25 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 
 import com.example.abdelazim.globaltask.R;
+import com.example.abdelazim.globaltask.utils.AppConstants;
 import com.example.abdelazim.globaltask.utils.AppFormatter;
 
 import java.util.Calendar;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class SettingsFragment extends Fragment implements TimePickerDialog.OnTimeSetListener {
 
-    public static final String KEY_WAKEUP_TIME = "wakeup-time";
-    public static final String DTASK_SHARED = "DTask-shared";
-    public static final String NEED_FETCH = "need-fetch";
+
     private SharedPreferences sharedPreferences;
-    private LinearLayout wakeupLayout;
-    private TextView wakeupSummaryTextView;
+    // Views
+    @BindView(R.id.wakeup_layout)
+    LinearLayout wakeupLayout;
+    @BindView(R.id.wakeup_summary)
+    TextView wakeupSummaryTextView;
+
+    private Calendar calendar;
 
     public static SettingsFragment newInstance() {
         return new SettingsFragment();
@@ -37,15 +44,23 @@ public class SettingsFragment extends Fragment implements TimePickerDialog.OnTim
                              @Nullable Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.settings_fragment, container, false);
-        wakeupLayout = view.findViewById(R.id.wakeup_layout);
-        wakeupSummaryTextView = view.findViewById(R.id.wakeup_summary);
+
+        ButterKnife.bind(this, view);
+
+
+        calendar = Calendar.getInstance();
+        long time = sharedPreferences.getLong(AppConstants.KEY_WAKEUP_TIME, 0);
+        calendar.setTimeInMillis(time);
+
+        wakeupSummaryTextView.setText(AppFormatter.formatTime(calendar.getTimeInMillis()));
+
         return view;
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        sharedPreferences = context.getSharedPreferences(DTASK_SHARED, Context.MODE_PRIVATE);
+        sharedPreferences = context.getSharedPreferences(AppConstants.DTASK_SHARED, Context.MODE_PRIVATE);
     }
 
     @Override
@@ -55,8 +70,7 @@ public class SettingsFragment extends Fragment implements TimePickerDialog.OnTim
         wakeupLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                new TimePickerDialog(getContext(), SettingsFragment.this, 8, 0, false).show();
+                new TimePickerDialog(getContext(), SettingsFragment.this, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), false).show();
             }
         });
     }
@@ -64,11 +78,11 @@ public class SettingsFragment extends Fragment implements TimePickerDialog.OnTim
     @Override
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
 
-        Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
         calendar.set(Calendar.MINUTE, minute);
         wakeupSummaryTextView.setText(AppFormatter.formatTime(hourOfDay, minute));
-        sharedPreferences.edit().putLong(KEY_WAKEUP_TIME, calendar.getTimeInMillis()).apply();
-        sharedPreferences.edit().putBoolean(NEED_FETCH, true).apply();
+        sharedPreferences.edit().putLong(AppConstants.KEY_WAKEUP_TIME, calendar.getTimeInMillis()).apply();
+        // Mark wakeup time as changed
+        sharedPreferences.edit().putBoolean(AppConstants.WAKEUP_TIME_CHANGED, true).apply();
     }
 }
