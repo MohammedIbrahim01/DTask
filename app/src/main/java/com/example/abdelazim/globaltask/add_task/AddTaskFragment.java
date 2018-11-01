@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -86,7 +87,11 @@ public class AddTaskFragment extends Fragment implements View.OnClickListener, T
 
         ButterKnife.bind(this, view);
 
+        // Set the initial time to display in the time textView
         calendar = Calendar.getInstance();
+        calendar.set(Calendar.HOUR_OF_DAY, calendar.get(Calendar.HOUR_OF_DAY) + 1);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
 
         titleEditText = view.findViewById(R.id.title_editText);
         descriptionEditText = view.findViewById(R.id.description_editText);
@@ -107,7 +112,6 @@ public class AddTaskFragment extends Fragment implements View.OnClickListener, T
      * Display PickTimeDialog
      */
     private void startPickTime() {
-        calendar = Calendar.getInstance();
         timePickerDialog = new TimePickerDialog(getContext(), this, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), false);
         timePickerDialog.show();
     }

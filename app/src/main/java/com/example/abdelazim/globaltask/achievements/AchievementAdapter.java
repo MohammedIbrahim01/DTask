@@ -1,9 +1,13 @@
 package com.example.abdelazim.globaltask.achievements;
 
+import android.graphics.ColorFilter;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffColorFilter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.abdelazim.globaltask.R;
@@ -83,7 +87,7 @@ class AchievementAdapter extends BaseExpandableListAdapter {
         Day day = (Day) getGroup(groupPosition);
         // Populate UI
         viewHolder.setDate(day.getHeader());
-        viewHolder.setDoneNum(String.valueOf(getChildrenCount(groupPosition)));
+        viewHolder.setDoneNum(String.valueOf(getChildrenCount(groupPosition) - day.getLateNum()));
         viewHolder.setLateNum(String.valueOf(day.getLateNum()));
 
         return convertView;
@@ -103,6 +107,8 @@ class AchievementAdapter extends BaseExpandableListAdapter {
         // Populate UI
         viewHolder.setTitle(currentAchievement.getTitle());
         viewHolder.setTime(AppFormatter.formatTime(currentAchievement.getTime()));
+        if (currentAchievement.isLate())
+            viewHolder.markAsLate();
 
         return convertView;
     }
@@ -170,10 +176,12 @@ class AchievementAdapter extends BaseExpandableListAdapter {
      */
     class ChildViewHolder {
         TextView achievementTitleTextView, achievementTimeTextView;
+        LinearLayout achRootView;
 
         ChildViewHolder(View itemView) {
             achievementTitleTextView = itemView.findViewById(R.id.achievement_title_textView);
             achievementTimeTextView = itemView.findViewById(R.id.achievement_time_textView);
+            achRootView = itemView.findViewById(R.id.ach_root_view);
         }
 
 
@@ -183,6 +191,10 @@ class AchievementAdapter extends BaseExpandableListAdapter {
 
         void setTime(String time) {
             achievementTimeTextView.setText(time);
+        }
+
+        void markAsLate() {
+            achRootView.getBackground().setColorFilter(new PorterDuffColorFilter(achRootView.getResources().getColor(R.color.colorLateAchBg), PorterDuff.Mode.MULTIPLY));
         }
     }
 

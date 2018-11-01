@@ -113,7 +113,7 @@ public class AppRepository {
         executors.diskIO.execute(new Runnable() {
             @Override
             public void run() {
-                taskList = taskDao.getTasks();
+                taskList = taskDao.getTasksLD();
                 taskListFetched = true;
             }
         });

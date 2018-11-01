@@ -13,6 +13,7 @@ public class Achievement {
     private String description;
     private int day;
     private long time;
+    private boolean late;
 
     @Ignore
     public Achievement(String title, String description, int day, long time) {
@@ -68,5 +69,13 @@ public class Achievement {
 
     public void setTime(long time) {
         this.time = time;
+    }
+
+    public boolean isLate() {
+        return late;
+    }
+
+    public void setLate(boolean late) {
+        this.late = late;
     }
 }

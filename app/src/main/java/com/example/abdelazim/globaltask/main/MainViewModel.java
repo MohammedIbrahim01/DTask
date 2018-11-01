@@ -10,6 +10,7 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.example.abdelazim.globaltask.repository.AppRepository;
+import com.example.abdelazim.globaltask.utils.AppScheduler;
 
 public class MainViewModel extends ViewModel {
 
@@ -23,6 +24,9 @@ public class MainViewModel extends ViewModel {
 
         repository = AppRepository.getInstance(applicationContext);
         this.mainActivityView = mainActivityView;
+        AppScheduler appScheduler = new AppScheduler(applicationContext);
+        appScheduler.scheduleTasksCleaner();
+        appScheduler.scheduleFillTasksNotification();
     }
 
     public AppRepository getRepository() {

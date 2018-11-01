@@ -17,6 +17,13 @@ public class NotificationPublisher extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
 
+        if (intent.hasExtra("action")) {
+
+            AppNotifications appNotifications = new AppNotifications(context);
+            appNotifications.notifyWakeup();
+            return;
+        }
+
         Notification notification = intent.getParcelableExtra(KEY_NOTIFICATION);
         int taskId = intent.getIntExtra(KEY_TASK_ID, 1000);
 

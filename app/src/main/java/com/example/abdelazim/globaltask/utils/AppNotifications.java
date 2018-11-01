@@ -27,7 +27,7 @@ public class AppNotifications {
 
     private Context mContext;
     private AlarmManager alarmManager;
-
+    private NotificationManager notificationManager;
 
     /**
      * Constructor
@@ -40,6 +40,13 @@ public class AppNotifications {
 
         mContext = context;
         alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+
+        notificationManager = (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
+
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, CHANNEL_NAME, NotificationManager.IMPORTANCE_HIGH);
+            notificationManager.createNotificationChannel(channel);
+        }
     }
 
 
@@ -75,13 +82,6 @@ public class AppNotifications {
 
     public void notify(Notification notification, int id) {
 
-        NotificationManager notificationManager = (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
-
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, CHANNEL_NAME, NotificationManager.IMPORTANCE_HIGH);
-            notificationManager.createNotificationChannel(channel);
-        }
-
         notificationManager.notify(id, notification);
     }
 
@@ -91,7 +91,6 @@ public class AppNotifications {
                 .setContentTitle(task.getTitle())
                 .setContentText(task.getDescription())
                 .setStyle(new NotificationCompat.BigTextStyle().setBigContentTitle(task.getDescription()))
-                .setStyle(new NotificationCompat.BigPictureStyle().bigPicture(getLargeImage()).bigLargeIcon(null))
                 .setSmallIcon(R.drawable.notification_small)
                 .setLargeIcon(getLargeIcon())
                 .setDefaults(NotificationCompat.DEFAULT_SOUND)
@@ -111,8 +110,28 @@ public class AppNotifications {
         return BitmapFactory.decodeResource(mContext.getResources(), R.mipmap.ic_dtask);
     }
 
-    private Bitmap getLargeImage() {
+    private Notification getWakeupNotification() {
 
-        return BitmapFactory.decodeResource(mContext.getResources(), R.mipmap.ic_notifiction_image);
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(mContext, CHANNEL_ID)
+                .setContentTitle("Time to set some Tasks")
+                .setContentText("take a few moment to fill tasks list will make your day more organized")
+                .setStyle(new NotificationCompat.BigTextStyle().setBigContentTitle("take a few moment to fill tasks list will make your day more organized"))
+                .setSmallIcon(R.drawable.notification_small)
+                .setLargeIcon(getLargeIcon())
+                .setDefaults(NotificationCompat.DEFAULT_SOUND)
+                .setLights(ContextCompat.getColor(mContext, R.color.colorAccent), 500, 2000)
+                .setContentIntent(PendingIntent.getActivity(mContext, 22, new Intent(mContext, MainActivity.class), PendingIntent.FLAG_UPDATE_CURRENT))
+                .setAutoCancel(true);
+
+        if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.O) {
+            builder.setPriority(NotificationCompat.PRIORITY_HIGH);
+        }
+
+        return builder.build();
+    }
+
+    public void notifyWakeup() {
+
+        notificationManager.notify(22, getWakeupNotification());
     }
 }

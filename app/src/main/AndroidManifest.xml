@@ -24,6 +24,7 @@
             android:screenOrientation="portrait" />
 
         <receiver android:name=".utils.NotificationPublisher" />
+        <receiver android:name=".utils.TasksCleaner" />
     </application>
 
 </manifest>

@@ -53,8 +53,6 @@ public class MainActivity extends AppCompatActivity implements MainViewModel.Mai
 
         // Observe
         mainViewModel.observe(this);
-
-
     }
 
     @Override
