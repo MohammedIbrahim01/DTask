@@ -1,9 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:ads="http://schemas.android.com/apk/res-auto"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main_frag_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorBg"
-    tools:context=".main.MainActivity" />
+    tools:context=".main.MainActivity">
+
+    <FrameLayout
+        android:id="@+id/main_frag_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/banner_adView" />
+
+    <com.google.android.gms.ads.AdView
+        android:id="@+id/banner_adView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        ads:adSize="BANNER"
+        ads:adUnitId="@string/banner_ad_unit_id">
+
+    </com.google.android.gms.ads.AdView>
+
+</RelativeLayout>

@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "10593085827",
+    "firebase_url": "https://globaltask-01901.firebaseio.com",
+    "project_id": "globaltask-01901",
+    "storage_bucket": "globaltask-01901.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:10593085827:android:45ad1460674b02a1",
+        "android_client_info": {
+          "package_name": "com.example.abdelazim.globaltask"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "10593085827-q42qs0v20ebhbln25bp483vq4lg5ljkp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.abdelazim.globaltask",
+            "certificate_hash": "5c28bd7801727af03d86636d23b92a94ed180d25"
+          }
+        },
+        {
+          "client_id": "10593085827-ig9ibjt9l14noln76rhb1hnimlekgrog.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC0VcW2VgSkyoqu3dAo7PBseOQcoIwBNmY"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "10593085827-ig9ibjt9l14noln76rhb1hnimlekgrog.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

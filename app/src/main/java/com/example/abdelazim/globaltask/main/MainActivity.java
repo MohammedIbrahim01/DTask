@@ -18,7 +18,13 @@ import com.example.abdelazim.globaltask.repository.model.Task;
 import com.example.abdelazim.globaltask.settings.SettingsActivity;
 import com.example.abdelazim.globaltask.tasks.TasksFragment;
 import com.example.abdelazim.globaltask.utils.AppConstants;
+import com.example.abdelazim.globaltask.utils.AppExecutors;
 import com.example.abdelazim.globaltask.utils.AppScheduler;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.InterstitialAd;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.reward.RewardedVideoAd;
 
 public class MainActivity extends AppCompatActivity implements MainViewModel.MainActivityView, SharedPreferences.OnSharedPreferenceChangeListener {
 
@@ -28,6 +34,10 @@ public class MainActivity extends AppCompatActivity implements MainViewModel.Mai
     private FragmentManager fragmentManager;
     // SharedPreferences
     private SharedPreferences sharedPreferences;
+    // Ads
+    AdView adView;
+    private RewardedVideoAd mRewardedVideoAd;
+    private int rewardedCount = 0;
 
 
     @Override
@@ -47,18 +57,58 @@ public class MainActivity extends AppCompatActivity implements MainViewModel.Mai
         mainViewModel.setScreen(1);
         // Observe
         mainViewModel.observe(this);
+
+        // Ads
+        adView = findViewById(R.id.banner_adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        adView.loadAd(adRequest);
+
+        mRewardedVideoAd = MobileAds.getRewardedVideoAdInstance(this);
+        loadRewardedVideoAd();
+    }
+
+    private void loadRewardedVideoAd() {
+        mRewardedVideoAd.loadAd("ca-app-pub-6179224755708033/5026782666",
+                new AdRequest.Builder().build());
+    }
+
+    private void showRewardedVideoAd() {
+        Log.i("WWW", "displayRewardedAd: " + rewardedCount);
+        if (rewardedCount / 4 == 0) {
+            rewardedCount++;
+            return;
+        }
+        if (mRewardedVideoAd.isLoaded())
+            mRewardedVideoAd.show();
+        loadRewardedVideoAd();
+        rewardedCount = 1;
+    }
+
+
+    @Override
+    protected void onPause() {
+        if (adView != null)
+            adView.pause();
+
+        super.onPause();
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
+    protected void onResume() {
+        super.onResume();
+        if (adView != null)
+            adView.resume();
+
         sharedPreferences.registerOnSharedPreferenceChangeListener(this);
+
     }
 
     @Override
     protected void onDestroy() {
-        super.onDestroy();
         sharedPreferences.unregisterOnSharedPreferenceChangeListener(this);
+        if (adView != null)
+            adView.destroy();
+        super.onDestroy();
     }
 
     /**
@@ -109,6 +159,7 @@ public class MainActivity extends AppCompatActivity implements MainViewModel.Mai
                         .commit();
                 break;
             case 1:
+                showRewardedVideoAd();
                 // Display TasksFragment
                 fragmentManager.beginTransaction()
                         .setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left)
@@ -125,11 +176,13 @@ public class MainActivity extends AppCompatActivity implements MainViewModel.Mai
                 break;
 
             case 3:
+                showRewardedVideoAd();
                 fragmentManager.popBackStack();
                 break;
 
         }
     }
+
 
     @Override
     public void display(int screen, Task task) {
