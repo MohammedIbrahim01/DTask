@@ -2,9 +2,11 @@ package com.example.abdelazim.globaltask.main;
 
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -13,19 +15,25 @@ import com.example.abdelazim.globaltask.achievements.AchievementsFragment;
 import com.example.abdelazim.globaltask.add_task.AddTaskFragment;
 import com.example.abdelazim.globaltask.settings.SettingsActivity;
 import com.example.abdelazim.globaltask.tasks.TasksFragment;
+import com.example.abdelazim.globaltask.utils.AppConstants;
+import com.example.abdelazim.globaltask.utils.AppScheduler;
 
-public class MainActivity extends AppCompatActivity implements MainViewModel.MainActivityView {
+public class MainActivity extends AppCompatActivity implements MainViewModel.MainActivityView, SharedPreferences.OnSharedPreferenceChangeListener {
 
     // ViewModel
     MainViewModel mainViewModel;
     // FragmentManager instance variable
     private FragmentManager fragmentManager;
+    // SharedPreferences
+    private SharedPreferences sharedPreferences;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        sharedPreferences = getSharedPreferences(AppConstants.DTASK_SHARED, MODE_PRIVATE);
         // Get fragmentManager
         fragmentManager = getSupportFragmentManager();
         // Get ViewModel
@@ -39,6 +47,17 @@ public class MainActivity extends AppCompatActivity implements MainViewModel.Mai
         mainViewModel.observe(this);
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        sharedPreferences.registerOnSharedPreferenceChangeListener(this);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        sharedPreferences.unregisterOnSharedPreferenceChangeListener(this);
+    }
 
     /**
      * Create menu to display settings option
@@ -108,5 +127,14 @@ public class MainActivity extends AppCompatActivity implements MainViewModel.Mai
                 break;
 
         }
+    }
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+
+        Log.i("WWW", "reschedule wakeup notification");
+
+        long wakeupTime = sharedPreferences.getLong(AppConstants.KEY_WAKEUP_TIME, 0);
+        mainViewModel.rescheduleWakeupNotification(wakeupTime);
     }
 }

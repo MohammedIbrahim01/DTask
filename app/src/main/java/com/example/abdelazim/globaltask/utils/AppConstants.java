@@ -13,4 +13,11 @@ public class AppConstants {
     public static final String NOTIFICATION_PUBLISHER_ACTION = "action";
     public static final String WAKEUP_NOTIFICATION = "wakeup-notification";
     public static final String TASK_TIME_NOTIFICATION = "task-time-notification";
+
+
+    public static final String KEY_NOTIFICATION = "key-notification";
+    public static final String KEY_TASK_ID = "key-task-id";
+
+    public static final String CHANNEL_NAME = "global-task";
+    public static final String CHANNEL_ID = "global-task-channel-id";
 }

@@ -78,11 +78,11 @@ public class SettingsFragment extends Fragment implements TimePickerDialog.OnTim
     @Override
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
 
+        calendar.set(Calendar.DAY_OF_YEAR, calendar.get(Calendar.DAY_OF_YEAR) + 1);
         calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
         calendar.set(Calendar.MINUTE, minute);
+        calendar.set(Calendar.SECOND, 0);
         wakeupSummaryTextView.setText(AppFormatter.formatTime(hourOfDay, minute));
         sharedPreferences.edit().putLong(AppConstants.KEY_WAKEUP_TIME, calendar.getTimeInMillis()).apply();
-        // Mark wakeup time as changed
-        sharedPreferences.edit().putBoolean(AppConstants.WAKEUP_TIME_CHANGED, true).apply();
     }
 }

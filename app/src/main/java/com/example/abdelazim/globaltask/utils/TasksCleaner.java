@@ -29,6 +29,7 @@ public class TasksCleaner extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
 
+        Log.i("WWW", "tasks cleaner");
         AppDatabase database = AppDatabase.getInstance(context);
         taskDao = database.taskDao();
         achievementsDao = database.achievementsDao();
@@ -45,7 +46,7 @@ public class TasksCleaner extends BroadcastReceiver {
         });
 
         while (!fetched) ;
-        if (lateTaskList.size() == 0)
+        if (lateTaskList == null || lateTaskList.size() == 0)
             return;
 
         int lastDayIndex = allDayList.size() - 1;

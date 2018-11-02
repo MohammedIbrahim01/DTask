@@ -19,11 +19,6 @@ import com.example.abdelazim.globaltask.repository.model.Task;
 
 public class AppNotifications {
 
-    private static final String KEY_NOTIFICATION = "key-notification";
-    private static final String KEY_TASK_ID = "key-task-id";
-
-    private static final String CHANNEL_NAME = "global-task";
-    private static final String CHANNEL_ID = "global-task-channel-id";
 
     private Context mContext;
     private AlarmManager alarmManager;
@@ -44,7 +39,7 @@ public class AppNotifications {
         notificationManager = (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
 
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, CHANNEL_NAME, NotificationManager.IMPORTANCE_HIGH);
+            NotificationChannel channel = new NotificationChannel(AppConstants.CHANNEL_ID, AppConstants.CHANNEL_NAME, NotificationManager.IMPORTANCE_HIGH);
             notificationManager.createNotificationChannel(channel);
         }
     }
@@ -60,8 +55,8 @@ public class AppNotifications {
         // Create intent and put notification and notification id as extra values
         Intent intent = new Intent(mContext, NotificationPublisher.class);
         intent.putExtra(AppConstants.NOTIFICATION_PUBLISHER_ACTION, AppConstants.TASK_TIME_NOTIFICATION);
-        intent.putExtra(KEY_NOTIFICATION, getNotification(task));
-        intent.putExtra(KEY_TASK_ID, task.getId());
+        intent.putExtra(AppConstants.KEY_NOTIFICATION, getNotification(task));
+        intent.putExtra(AppConstants.KEY_TASK_ID, task.getId());
 
         PendingIntent pendingIntent = PendingIntent.getBroadcast(mContext, (int) task.getTime() % 100, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
@@ -88,10 +83,9 @@ public class AppNotifications {
 
     private Notification getNotification(Task task) {
 
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(mContext, CHANNEL_ID)
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(mContext, AppConstants.CHANNEL_ID)
                 .setContentTitle(task.getTitle())
                 .setContentText(task.getDescription())
-                .setStyle(new NotificationCompat.BigTextStyle().setBigContentTitle(task.getDescription()))
                 .setSmallIcon(R.drawable.notification_small)
                 .setLargeIcon(getLargeIcon())
                 .setDefaults(NotificationCompat.DEFAULT_SOUND)
@@ -113,18 +107,18 @@ public class AppNotifications {
 
     private Notification getWakeupNotification() {
 
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(mContext, CHANNEL_ID)
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(mContext, AppConstants.CHANNEL_ID)
                 .setContentTitle("Time to set some Tasks")
                 .setContentText("take a few moment to fill tasks list will make your day more organized")
+                .setStyle(new NotificationCompat.BigTextStyle().bigText("take a few moment to fill tasks list will make your day more organized"))
                 .setSmallIcon(R.drawable.notification_small)
                 .setLargeIcon(getLargeIcon())
-                .setDefaults(NotificationCompat.DEFAULT_SOUND)
-                .setLights(ContextCompat.getColor(mContext, R.color.colorAccent), 500, 2000)
-                .setContentIntent(PendingIntent.getActivity(mContext, 22, new Intent(mContext, MainActivity.class), PendingIntent.FLAG_UPDATE_CURRENT))
+                .setDefaults(NotificationCompat.DEFAULT_ALL)
+                .setContentIntent(PendingIntent.getActivity(mContext, AppConstants.RC_WAKEUP_NOTIFICATION_PI, new Intent(mContext, MainActivity.class), PendingIntent.FLAG_UPDATE_CURRENT))
                 .setAutoCancel(true);
 
         if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.O) {
-            builder.setPriority(NotificationCompat.PRIORITY_HIGH);
+            builder.setPriority(NotificationCompat.PRIORITY_LOW);
         }
 
         return builder.build();

@@ -8,6 +8,7 @@ import android.arch.lifecycle.ViewModel;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.annotation.Nullable;
+import android.util.Log;
 
 import com.example.abdelazim.globaltask.repository.AppRepository;
 import com.example.abdelazim.globaltask.utils.AppConstants;
@@ -43,9 +44,6 @@ public class MainViewModel extends ViewModel {
 
         if (sharedPreferences.getBoolean(AppConstants.KEY_FIRST_LAUNCH, true))
             firstLaunchSetup();
-
-        if (sharedPreferences.getBoolean(AppConstants.WAKEUP_TIME_CHANGED, false))
-            rescheduleWakeupNotification();
     }
 
 
@@ -87,10 +85,8 @@ public class MainViewModel extends ViewModel {
     /**
      * If wakeup time has changed, re-schedule wakeup notification
      */
-    private void rescheduleWakeupNotification() {
-        long wakeupTime = sharedPreferences.getLong(AppConstants.KEY_WAKEUP_TIME, 0);
+    public void rescheduleWakeupNotification(long wakeupTime) {
         appScheduler.scheduleWakeupNotification(wakeupTime);
-        sharedPreferences.edit().putBoolean(AppConstants.WAKEUP_TIME_CHANGED, false).apply();
     }
 
 
@@ -100,6 +96,7 @@ public class MainViewModel extends ViewModel {
      * And Schedule wakeup notification and tasks cleaner
      */
     private void firstLaunchSetup() {
+        Log.i("WWW", "first launch setup");
         // SharedPreferences: Set wake up time to 8:00 am
         Calendar calendar = getExactCalendar(8);
         sharedPreferences.edit().putLong(AppConstants.KEY_WAKEUP_TIME, calendar.getTimeInMillis()).apply();

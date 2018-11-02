@@ -25,11 +25,11 @@ public class NotificationPublisher extends BroadcastReceiver {
 
             String action = intent.getStringExtra(AppConstants.NOTIFICATION_PUBLISHER_ACTION);
             if (action.equals(AppConstants.WAKEUP_NOTIFICATION)) {
-
+                Log.i("WWW", "wakeup notification");
                 appNotifications.notifyWakeup();
 
             } else if (action.equals(AppConstants.TASK_TIME_NOTIFICATION)) {
-
+                Log.i("WWW", "task time notification");
                 Notification notification = intent.getParcelableExtra(KEY_NOTIFICATION);
                 int taskId = intent.getIntExtra(KEY_TASK_ID, 1000);
 
