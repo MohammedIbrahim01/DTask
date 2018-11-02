@@ -38,4 +38,18 @@ public class AddTaskViewModel extends ViewModel {
 
         repository.saveNewTask(task);
     }
+
+    public void saveEditedTask(int id, String title, String description, long timeInMillis) {
+
+        Task task = new Task(id, title, description, timeInMillis);
+
+        repository.saveEditedTask(task);
+    }
+
+    public void deleteTask(int id, String title, String description, long timeInMillis) {
+
+        Task task = new Task(id, title, description, timeInMillis);
+
+        repository.delete(task);
+    }
 }

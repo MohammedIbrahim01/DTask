@@ -3,7 +3,6 @@ package com.example.abdelazim.globaltask.tasks;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,12 +18,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
 public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
 
 
     private List<Task> taskList = new ArrayList<>();
+    private final OnTaskItemClickListener mOnTaskItemClickListener;
+
+    public TaskAdapter(OnTaskItemClickListener mOnTaskItemClickListener) {
+        this.mOnTaskItemClickListener = mOnTaskItemClickListener;
+    }
 
 
     // Setter and Getter for taskList
@@ -66,7 +69,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
     /**
      * Item ViewHolder
      */
-    class ViewHolder extends RecyclerView.ViewHolder {
+    class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         @BindView(R.id.task_title_textView)
         TextView taskTitleTextView;
         @BindView(R.id.task_description_textView)
@@ -83,6 +86,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
             taskDescriptionTextView = itemView.findViewById(R.id.task_description_textView);
             taskTimeTextView = itemView.findViewById(R.id.task_time_textView);
             rootView = itemView.findViewById(R.id.task_item_root_view);
+            itemView.setOnClickListener(this);
         }
 
         void setTitle(String title) {
@@ -100,5 +104,14 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
         void markAsLate() {
             rootView.getBackground().setColorFilter(new PorterDuffColorFilter(rootView.getResources().getColor(R.color.colorBgLateTask), PorterDuff.Mode.MULTIPLY));
         }
+
+        @Override
+        public void onClick(View v) {
+            mOnTaskItemClickListener.onTaskItemClick(getAdapterPosition());
+        }
+    }
+
+    public interface OnTaskItemClickListener {
+        void onTaskItemClick(int index);
     }
 }

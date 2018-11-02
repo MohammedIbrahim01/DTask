@@ -36,12 +36,16 @@ public class AddTaskFragment extends Fragment implements View.OnClickListener, T
     private Calendar calendar;
 
     // Views
+    @BindView(R.id.text_new)
+    TextView newTextView;
     @BindView(R.id.title_editText)
     EditText titleEditText;
     @BindView(R.id.description_editText)
     EditText descriptionEditText;
     @BindView(R.id.save_button)
     Button saveButton;
+    @BindView(R.id.delete_button)
+    Button deleteButton;
     @BindView(R.id.time_textView)
     TextView timeTextView;
     @BindView(R.id.edit_imageView)
@@ -50,6 +54,8 @@ public class AddTaskFragment extends Fragment implements View.OnClickListener, T
     FloatingActionLayout backFab;
 
     private TimePickerDialog timePickerDialog;
+    private boolean editMode = false;
+    private int taskId;
 
 
     /**
@@ -100,10 +106,26 @@ public class AddTaskFragment extends Fragment implements View.OnClickListener, T
         Calendar calendar = Calendar.getInstance();
         timeTextView.setText(AppFormatter.formatTime(calendar.getTimeInMillis()));
 
+
+        Bundle arguments = getArguments();
+        if (arguments != null) {
+            editMode = true;
+            titleEditText.setText(arguments.getString("title"));
+            descriptionEditText.setText(arguments.getString("description"));
+            taskId = arguments.getInt("taskId");
+            this.calendar = Calendar.getInstance();
+            this.calendar.setTimeInMillis(arguments.getLong("time"));
+            timeTextView.setText(AppFormatter.formatTime(this.calendar.getTimeInMillis()));
+            saveButton.setText("edit");
+            newTextView.setText("Edit");
+            deleteButton.setVisibility(View.VISIBLE);
+        }
+
         timeTextView.setOnClickListener(this);
         editImageView.setOnClickListener(this);
         saveButton.setOnClickListener(this);
         backFab.setOnClickListener(this);
+        deleteButton.setOnClickListener(this);
     }
 
 
@@ -134,6 +156,23 @@ public class AddTaskFragment extends Fragment implements View.OnClickListener, T
         mainViewModel.setScreen(3);
     }
 
+    /**
+     * Get the title and description and the time
+     *
+     * Save new Task
+     *
+     * Go back to tasks fragment
+     */
+    private void saveEditedTask() {
+
+        String title = titleEditText.getText().toString();
+        String description = descriptionEditText.getText().toString();
+
+        mViewModel.saveEditedTask(taskId, title, description, calendar.getTimeInMillis());
+
+        mainViewModel.setScreen(3);
+    }
+
 
     @Override
     public void onClick(View v) {
@@ -147,13 +186,30 @@ public class AddTaskFragment extends Fragment implements View.OnClickListener, T
 
             case R.id.save_button:
                 if (thereIsEmptyFields()) break;
-                saveNewTask();
+                if (editMode) {
+                    saveEditedTask();
+                    break;
+                } else {
+                    saveNewTask();
+                }
                 break;
 
             case R.id.back_fab:
                 mainViewModel.setScreen(3);
                 break;
+            case R.id.delete_button:
+                deleteTask();
         }
+    }
+
+    private void deleteTask() {
+
+        String title = titleEditText.getText().toString();
+        String description = descriptionEditText.getText().toString();
+
+        mViewModel.deleteTask(taskId, title, description, calendar.getTimeInMillis());
+
+        mainViewModel.setScreen(3);
     }
 
     private boolean thereIsEmptyFields() {

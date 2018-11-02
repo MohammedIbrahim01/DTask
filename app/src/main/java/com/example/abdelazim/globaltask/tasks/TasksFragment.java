@@ -22,7 +22,7 @@ import com.robertlevonyan.views.customfloatingactionbutton.FloatingActionLayout;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class TasksFragment extends Fragment implements View.OnClickListener, TasksViewModel.TasksView {
+public class TasksFragment extends Fragment implements View.OnClickListener, TasksViewModel.TasksView, TaskAdapter.OnTaskItemClickListener {
 
     // MainViewModel
     private MainViewModel mainViewModel;
@@ -100,7 +100,7 @@ public class TasksFragment extends Fragment implements View.OnClickListener, Tas
      */
     private void setupRecyclerViewWithAdapter() {
 
-        adapter = new TaskAdapter();
+        adapter = new TaskAdapter(this);
         tasksRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         tasksRecyclerView.setHasFixedSize(true);
         tasksRecyclerView.setAdapter(adapter);
@@ -163,5 +163,12 @@ public class TasksFragment extends Fragment implements View.OnClickListener, Tas
 
         tasksRecyclerView.setVisibility(View.VISIBLE);
         noTasksView.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void onTaskItemClick(int index) {
+
+        Task task = adapter.getTaskList().get(index);
+        mainViewModel.setScreen(4, task);
     }
 }

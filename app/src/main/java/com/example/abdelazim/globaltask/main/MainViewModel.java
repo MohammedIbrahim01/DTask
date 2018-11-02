@@ -11,6 +11,7 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.example.abdelazim.globaltask.repository.AppRepository;
+import com.example.abdelazim.globaltask.repository.model.Task;
 import com.example.abdelazim.globaltask.utils.AppConstants;
 import com.example.abdelazim.globaltask.utils.AppNotifications;
 import com.example.abdelazim.globaltask.utils.AppScheduler;
@@ -82,6 +83,11 @@ public class MainViewModel extends ViewModel {
     }
 
 
+    public void setScreen(int screen, Task task) {
+        view.display(screen, task);
+    }
+
+
     /**
      * If wakeup time has changed, re-schedule wakeup notification
      */
@@ -136,5 +142,7 @@ public class MainViewModel extends ViewModel {
     public interface MainActivityView {
 
         void display(int screen);
+
+        void display(int screen, Task task);
     }
 }

@@ -206,4 +206,26 @@ public class AppRepository {
             }
         });
     }
+
+    public void saveEditedTask(final Task task) {
+
+        executors.diskIO.execute(new Runnable() {
+            @Override
+            public void run() {
+
+                taskDao.updateTask(task);
+            }
+        });
+    }
+
+    public void delete(final Task task) {
+
+        executors.diskIO.execute(new Runnable() {
+            @Override
+            public void run() {
+
+                taskDao.deleteTask(task);
+            }
+        });
+    }
 }

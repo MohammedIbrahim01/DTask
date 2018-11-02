@@ -3,6 +3,7 @@ package com.example.abdelazim.globaltask.main;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -13,6 +14,7 @@ import android.view.MenuItem;
 import com.example.abdelazim.globaltask.R;
 import com.example.abdelazim.globaltask.achievements.AchievementsFragment;
 import com.example.abdelazim.globaltask.add_task.AddTaskFragment;
+import com.example.abdelazim.globaltask.repository.model.Task;
 import com.example.abdelazim.globaltask.settings.SettingsActivity;
 import com.example.abdelazim.globaltask.tasks.TasksFragment;
 import com.example.abdelazim.globaltask.utils.AppConstants;
@@ -126,6 +128,24 @@ public class MainActivity extends AppCompatActivity implements MainViewModel.Mai
                 fragmentManager.popBackStack();
                 break;
 
+        }
+    }
+
+    @Override
+    public void display(int screen, Task task) {
+        if (screen == 4) {
+            AddTaskFragment editTaskFragment = AddTaskFragment.newInstance();
+            Bundle args = new Bundle();
+            args.putString("title", task.getTitle());
+            args.putString("description", task.getDescription());
+            args.putInt("taskId", task.getId());
+            args.putLong("time", task.getTime());
+            editTaskFragment.setArguments(args);
+            fragmentManager.beginTransaction()
+                    .setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_right)
+                    .addToBackStack(null)
+                    .replace(R.id.main_frag_container, editTaskFragment)
+                    .commit();
         }
     }
 
