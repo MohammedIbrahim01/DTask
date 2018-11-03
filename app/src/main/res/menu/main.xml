@@ -6,4 +6,15 @@
         android:id="@+id/action_settings"
         android:title="settings"
         app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_log"
+        android:title="sign in with Google"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_publish_task"
+        android:title="Publish task"
+        android:visible="false"
+        app:showAsAction="never" />
 </menu>

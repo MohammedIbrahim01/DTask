@@ -56,6 +56,7 @@ public class AddTaskFragment extends Fragment implements View.OnClickListener, T
     private TimePickerDialog timePickerDialog;
     private boolean editMode = false;
     private int taskId;
+    private boolean publishMode = false;
 
 
     /**
@@ -107,8 +108,21 @@ public class AddTaskFragment extends Fragment implements View.OnClickListener, T
         timeTextView.setText(AppFormatter.formatTime(calendar.getTimeInMillis()));
 
 
+        timeTextView.setOnClickListener(this);
+        editImageView.setOnClickListener(this);
+        saveButton.setOnClickListener(this);
+        backFab.setOnClickListener(this);
+        deleteButton.setOnClickListener(this);
+
         Bundle arguments = getArguments();
         if (arguments != null) {
+            if (arguments.containsKey("publish-mode")) {
+
+                publishMode = true;
+                saveButton.setText("publish");
+                newTextView.setText("publish");
+                return;
+            }
             editMode = true;
             titleEditText.setText(arguments.getString("title"));
             descriptionEditText.setText(arguments.getString("description"));
@@ -120,12 +134,6 @@ public class AddTaskFragment extends Fragment implements View.OnClickListener, T
             newTextView.setText("Edit");
             deleteButton.setVisibility(View.VISIBLE);
         }
-
-        timeTextView.setOnClickListener(this);
-        editImageView.setOnClickListener(this);
-        saveButton.setOnClickListener(this);
-        backFab.setOnClickListener(this);
-        deleteButton.setOnClickListener(this);
     }
 
 
@@ -189,6 +197,9 @@ public class AddTaskFragment extends Fragment implements View.OnClickListener, T
                 if (editMode) {
                     saveEditedTask();
                     break;
+
+                } else if (publishMode) {
+                    publishTask();
                 } else {
                     saveNewTask();
                 }
@@ -200,6 +211,16 @@ public class AddTaskFragment extends Fragment implements View.OnClickListener, T
             case R.id.delete_button:
                 deleteTask();
         }
+    }
+
+    private void publishTask() {
+
+        String title = titleEditText.getText().toString();
+        String description = descriptionEditText.getText().toString();
+
+        mViewModel.publishTask(title, description, calendar.getTimeInMillis(), getContext());
+
+        getActivity().finish();
     }
 
     private void deleteTask() {

@@ -13,6 +13,7 @@ import com.example.abdelazim.globaltask.repository.model.Achievement;
 import com.example.abdelazim.globaltask.repository.model.Day;
 import com.example.abdelazim.globaltask.repository.model.DayWithAchievements;
 import com.example.abdelazim.globaltask.repository.model.Task;
+import com.example.abdelazim.globaltask.repository.remote.RemoteDatabase;
 import com.example.abdelazim.globaltask.utils.AppExecutors;
 import com.example.abdelazim.globaltask.utils.AppFormatter;
 import com.example.abdelazim.globaltask.utils.AppNotifications;
@@ -34,11 +35,13 @@ public class AppRepository {
     private DayWithAchievementsDao dayWithAchievementsDao;
 
     private LiveData<List<Task>> taskList;
-    private Task task;
     private LiveData<List<DayWithAchievements>> dayWithAchievementsList;
     // Singleton pattern variables
     private static final Object LOCK = new Object();
     private static AppRepository sInstance;
+
+    //
+    private RemoteDatabase remoteDatabase;
 
     /**
      * Constructor
@@ -59,6 +62,8 @@ public class AppRepository {
         achievementDao = database.achievementsDao();
         dayDao = database.dayDao();
         dayWithAchievementsDao = database.dayWithAchievementsDao();
+
+        remoteDatabase = new RemoteDatabase();
     }
 
     /**
@@ -227,5 +232,10 @@ public class AppRepository {
                 taskDao.deleteTask(task);
             }
         });
+    }
+
+    public void publishTask(Task task) {
+
+        remoteDatabase.publishTask(task);
     }
 }

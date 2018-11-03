@@ -1,6 +1,7 @@
 package com.example.abdelazim.globaltask.add_task;
 
 import android.arch.lifecycle.ViewModel;
+import android.content.Context;
 
 import com.example.abdelazim.globaltask.repository.AppRepository;
 import com.example.abdelazim.globaltask.repository.model.Task;
@@ -51,5 +52,12 @@ public class AddTaskViewModel extends ViewModel {
         Task task = new Task(id, title, description, timeInMillis);
 
         repository.delete(task);
+    }
+
+    public void publishTask(String title, String description, long timeInMillis, Context context) {
+
+        Task task = new Task(title, description, timeInMillis);
+        repository = AppRepository.getInstance(context);
+        repository.publishTask(task);
     }
 }

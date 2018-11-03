@@ -3,13 +3,17 @@ package com.example.abdelazim.globaltask.main;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
+import com.example.abdelazim.globaltask.PublishTaskActivity;
 import com.example.abdelazim.globaltask.R;
 import com.example.abdelazim.globaltask.achievements.AchievementsFragment;
 import com.example.abdelazim.globaltask.add_task.AddTaskFragment;
@@ -21,15 +25,41 @@ import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.InterstitialAd;
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.auth.api.signin.GoogleSignInResult;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
-public class MainActivity extends AppCompatActivity implements MainViewModel.MainActivityView, SharedPreferences.OnSharedPreferenceChangeListener {
+public class MainActivity extends AppCompatActivity implements MainViewModel.MainActivityView, SharedPreferences.OnSharedPreferenceChangeListener, GoogleApiClient.OnConnectionFailedListener {
 
+    public static final int RC_GOOGLE_SIGN_IN = 1009;
     // ViewModel
     MainViewModel mainViewModel;
     // FragmentManager instance variable
     private FragmentManager fragmentManager;
     // SharedPreferences
     private SharedPreferences sharedPreferences;
+    // Firebase
+    private FirebaseAuth firebaseAuth;
+    private GoogleApiClient googleApiClient;
+    private Menu menu;
+    private boolean signedInWithGoogle;
+    // RealTime database
+    private FirebaseDatabase firebaseDatabase;
+    private DatabaseReference usersNode;
     // Ads
     AdView adView;
     InterstitialAd interstitialAd;
@@ -54,13 +84,29 @@ public class MainActivity extends AppCompatActivity implements MainViewModel.Mai
         // Observe
         mainViewModel.observe(this);
 
+        // Firebase
+        firebaseAuth = FirebaseAuth.getInstance();
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        usersNode = firebaseDatabase.getReference().child("users");
+
+        // Determine if the user is admin
+
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .build();
+        googleApiClient = new GoogleApiClient.Builder(this)
+                .enableAutoManage(this, this)
+                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+                .build();
+
         // Ads
         adView = findViewById(R.id.banner_adView);
         AdRequest adRequest = new AdRequest.Builder().build();
         adView.loadAd(adRequest);
 
         interstitialAd = new InterstitialAd(this);
-        interstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
+        interstitialAd.setAdUnitId(getString(R.string.interstitial_ad_id));
         loadInterstitialAd();
         interstitialAd.setAdListener(new AdListener() {
             @Override
@@ -146,6 +192,9 @@ public class MainActivity extends AppCompatActivity implements MainViewModel.Mai
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main, menu);
+
+        this.menu = menu;
+        updateUi();
         return true;
     }
 
@@ -163,11 +212,84 @@ public class MainActivity extends AppCompatActivity implements MainViewModel.Mai
                 // Display SettingsActivity
                 startActivity(new Intent(MainActivity.this, SettingsActivity.class));
                 return true;
+            case R.id.action_log:
+                if (!signedInWithGoogle) {
+                    Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(googleApiClient);
+                    startActivityForResult(signInIntent, RC_GOOGLE_SIGN_IN);
+                    return true;
+                } else {
+                    Auth.GoogleSignInApi.signOut(googleApiClient);
+                    signedInWithGoogle = false;
+                    Toast.makeText(this, "Signed out !", Toast.LENGTH_SHORT).show();
+                    updateUi();
+                    return true;
+                }
+
+            case R.id.action_publish_task:
+                startActivity(new Intent(MainActivity.this, PublishTaskActivity.class));
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
 
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == RC_GOOGLE_SIGN_IN) {
+
+            GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
+            if (result.isSuccess()) {
+
+                GoogleSignInAccount account = result.getSignInAccount();
+                AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
+                firebaseAuth.signInWithCredential(credential).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull com.google.android.gms.tasks.Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            signedInWithGoogle = true;
+                            updateUi();
+                            final FirebaseUser currentUser = firebaseAuth.getCurrentUser();
+                            final DatabaseReference currentUserNode = usersNode.child(currentUser.getUid());
+                            currentUserNode.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                    if (!dataSnapshot.hasChild("admin"))
+                                        currentUserNode.child("admin").setValue(false);
+                                    else if (dataSnapshot.child("admin").getValue(Boolean.class)) {
+                                        updateMenuForAdmin();
+                                        Log.i("WWW", "user is admin");
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                }
+                            });
+                            Toast.makeText(MainActivity.this, "hello, " + currentUser.getDisplayName(), Toast.LENGTH_SHORT).show();
+                        } else {
+                            Log.i("WWW", "onComplete: failed: " + task.getResult().toString());
+                            Toast.makeText(MainActivity.this, "google sign in failed", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+            }
+        }
+    }
+
+    private void updateUi() {
+
+        if (signedInWithGoogle)
+            menu.findItem(R.id.action_log).setTitle("log out");
+        else
+            menu.findItem(R.id.action_log).setTitle("Sign in with google");
+    }
+
+    private void updateMenuForAdmin() {
+        menu.findItem(R.id.action_publish_task).setVisible(true);
+    }
 
     /**
      * Display the appropriate fragment
@@ -234,5 +356,10 @@ public class MainActivity extends AppCompatActivity implements MainViewModel.Mai
 
         long wakeupTime = sharedPreferences.getLong(AppConstants.KEY_WAKEUP_TIME, 0);
         mainViewModel.rescheduleWakeupNotification(wakeupTime);
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+        Log.i("WWW", "onConnectionFailed: " + connectionResult.getErrorMessage());
     }
 }
