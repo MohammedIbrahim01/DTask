@@ -3,7 +3,6 @@ package com.example.abdelazim.globaltask.main;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -18,13 +17,10 @@ import com.example.abdelazim.globaltask.repository.model.Task;
 import com.example.abdelazim.globaltask.settings.SettingsActivity;
 import com.example.abdelazim.globaltask.tasks.TasksFragment;
 import com.example.abdelazim.globaltask.utils.AppConstants;
-import com.example.abdelazim.globaltask.utils.AppExecutors;
-import com.example.abdelazim.globaltask.utils.AppScheduler;
+import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.InterstitialAd;
-import com.google.android.gms.ads.MobileAds;
-import com.google.android.gms.ads.reward.RewardedVideoAd;
 
 public class MainActivity extends AppCompatActivity implements MainViewModel.MainActivityView, SharedPreferences.OnSharedPreferenceChangeListener {
 
@@ -36,8 +32,8 @@ public class MainActivity extends AppCompatActivity implements MainViewModel.Mai
     private SharedPreferences sharedPreferences;
     // Ads
     AdView adView;
-    private RewardedVideoAd mRewardedVideoAd;
-    private int rewardedCount = 0;
+    InterstitialAd interstitialAd;
+    private int interstitialCount = 0;
 
 
     @Override
@@ -63,25 +59,55 @@ public class MainActivity extends AppCompatActivity implements MainViewModel.Mai
         AdRequest adRequest = new AdRequest.Builder().build();
         adView.loadAd(adRequest);
 
-        mRewardedVideoAd = MobileAds.getRewardedVideoAdInstance(this);
-        loadRewardedVideoAd();
+        interstitialAd = new InterstitialAd(this);
+        interstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
+        loadInterstitialAd();
+        interstitialAd.setAdListener(new AdListener() {
+            @Override
+            public void onAdLoaded() {
+                // Code to be executed when an ad finishes loading.
+                Log.i("WWW", "onAdLoaded: loaded");
+            }
+
+            @Override
+            public void onAdFailedToLoad(int errorCode) {
+                // Code to be executed when an ad request fails.
+            }
+
+            @Override
+            public void onAdOpened() {
+                // Code to be executed when the ad is displayed.
+            }
+
+            @Override
+            public void onAdLeftApplication() {
+                // Code to be executed when the user has left the app.
+            }
+
+            @Override
+            public void onAdClosed() {
+                // Code to be executed when when the interstitial ad is closed.
+                loadInterstitialAd();
+            }
+        });
     }
 
-    private void loadRewardedVideoAd() {
-        mRewardedVideoAd.loadAd("ca-app-pub-6179224755708033/5026782666",
-                new AdRequest.Builder().build());
+    private void loadInterstitialAd() {
+        Log.i("WWW", "loadInterstitialAd");
+        interstitialAd.loadAd(new AdRequest.Builder().build());
     }
 
-    private void showRewardedVideoAd() {
-        Log.i("WWW", "displayRewardedAd: " + rewardedCount);
-        if (rewardedCount / 4 == 0) {
-            rewardedCount++;
+
+    private void showInterstitialAd() {
+        Log.i("WWW", "InterstitialAd: " + interstitialCount);
+        if (interstitialCount / 2 == 0) {
+            interstitialCount++;
             return;
         }
-        if (mRewardedVideoAd.isLoaded())
-            mRewardedVideoAd.show();
-        loadRewardedVideoAd();
-        rewardedCount = 1;
+        if (interstitialAd.isLoaded())
+            interstitialAd.show();
+
+        interstitialCount = 0;
     }
 
 
@@ -159,7 +185,6 @@ public class MainActivity extends AppCompatActivity implements MainViewModel.Mai
                         .commit();
                 break;
             case 1:
-                showRewardedVideoAd();
                 // Display TasksFragment
                 fragmentManager.beginTransaction()
                         .setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left)
@@ -176,7 +201,7 @@ public class MainActivity extends AppCompatActivity implements MainViewModel.Mai
                 break;
 
             case 3:
-                showRewardedVideoAd();
+                showInterstitialAd();
                 fragmentManager.popBackStack();
                 break;
 

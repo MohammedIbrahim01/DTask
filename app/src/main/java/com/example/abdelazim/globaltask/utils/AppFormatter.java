@@ -64,9 +64,7 @@ public class AppFormatter {
         // Get day info from calendar
         int day = calendar.get(Calendar.DAY_OF_MONTH);
         int month = calendar.get(Calendar.MONTH);
-        int year = calendar.get(Calendar.YEAR);
 
-
-        return day + "  " + months[month] + " " + year;
+        return day + "  " + months[month];
     }
 }
