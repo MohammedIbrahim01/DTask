@@ -234,8 +234,28 @@ public class AppRepository {
         });
     }
 
+
     public void publishTask(Task task) {
 
         remoteDatabase.publishTask(task);
+    }
+
+
+    private volatile boolean fetched;
+    private List<Task> globalTaskList;
+
+    public List<Task> getGlobalTasks() {
+        fetched = false;
+
+        executors.diskIO.execute(new Runnable() {
+            @Override
+            public void run() {
+
+                globalTaskList = taskDao.getAllGlobalTasks();
+                fetched = true;
+            }
+        });
+        while (!fetched) ;
+        return globalTaskList;
     }
 }

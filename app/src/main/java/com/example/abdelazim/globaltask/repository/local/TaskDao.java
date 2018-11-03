@@ -18,11 +18,14 @@ public interface TaskDao {
     @Query("SELECT * FROM task_table ORDER BY time")
     LiveData<List<Task>> getTasksLD();
 
-    @Query("SELECT * FROM task_table ORDER BY time")
+    @Query("SELECT * FROM task_table WHERE global = 'true' ORDER BY time")
     List<Task> getTasks();
 
     @Query("SELECT * FROM task_table WHERE id = :id")
     Task getTaskById(int id);
+
+    @Query("SELECT * FROM task_table WHERE global = 'true'")
+    List<Task> getAllGlobalTasks();
 
     @Query("SELECT * FROM task_table WHERE id = :id")
     LiveData<Task> getTaskByIdLD(int id);

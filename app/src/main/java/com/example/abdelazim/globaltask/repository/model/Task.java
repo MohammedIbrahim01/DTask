@@ -13,6 +13,10 @@ public class Task {
     private String description;
     private long time;
     private boolean late = false;
+    private boolean global = false;
+
+    public Task() {
+    }
 
     @Ignore
     public Task(String title, String description, long time) {
@@ -66,5 +70,13 @@ public class Task {
 
     public void setLate(boolean late) {
         this.late = late;
+    }
+
+    public boolean isGlobal() {
+        return global;
+    }
+
+    public void setGlobal(boolean global) {
+        this.global = global;
     }
 }

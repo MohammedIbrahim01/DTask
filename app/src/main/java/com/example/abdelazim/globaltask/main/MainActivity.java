@@ -32,6 +32,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -42,6 +43,11 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
+import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity implements MainViewModel.MainActivityView, SharedPreferences.OnSharedPreferenceChangeListener, GoogleApiClient.OnConnectionFailedListener {
 
@@ -60,10 +66,13 @@ public class MainActivity extends AppCompatActivity implements MainViewModel.Mai
     // RealTime database
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference usersNode;
+    // RemoteConfig
+    private FirebaseRemoteConfig remoteConfig;
     // Ads
     AdView adView;
     InterstitialAd interstitialAd;
     private int interstitialCount = 0;
+    private boolean globalTaskAvailable;
 
 
     @Override
@@ -88,8 +97,6 @@ public class MainActivity extends AppCompatActivity implements MainViewModel.Mai
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseDatabase = FirebaseDatabase.getInstance();
         usersNode = firebaseDatabase.getReference().child("users");
-
-        // Determine if the user is admin
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()

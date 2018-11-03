@@ -9,6 +9,7 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,11 @@ import android.widget.RelativeLayout;
 import com.example.abdelazim.globaltask.R;
 import com.example.abdelazim.globaltask.main.MainViewModel;
 import com.example.abdelazim.globaltask.repository.model.Task;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.robertlevonyan.views.customfloatingactionbutton.FloatingActionLayout;
 
 import butterknife.BindView;
@@ -37,8 +43,11 @@ public class TasksFragment extends Fragment implements View.OnClickListener, Tas
     RelativeLayout noTasksView;
     @BindView(R.id.tasks_recyclerView)
     RecyclerView tasksRecyclerView;
+    @BindView(R.id.get_global_task_fab)
+    FloatingActionLayout getGlobalTaskFab;
 
     private TaskAdapter adapter;
+    private DatabaseReference globalTasksNode;
 
 
     public static TasksFragment newInstance() {
@@ -72,6 +81,34 @@ public class TasksFragment extends Fragment implements View.OnClickListener, Tas
 
         // Observe
         mViewModel.observe(this);
+
+        globalTasksNode = FirebaseDatabase.getInstance().getReference().child("tasks");
+        globalTasksNode.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                mViewModel.newGlobalTask(dataSnapshot.getValue(Task.class));
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 
 
@@ -107,6 +144,7 @@ public class TasksFragment extends Fragment implements View.OnClickListener, Tas
         DividerItemDecoration decoration = new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL);
         decoration.setDrawable(getResources().getDrawable(R.drawable.divider));
         tasksRecyclerView.addItemDecoration(decoration);
+
 
         // Swipe when finish task functionality
         getItemTouchHelper().attachToRecyclerView(tasksRecyclerView);
@@ -163,6 +201,21 @@ public class TasksFragment extends Fragment implements View.OnClickListener, Tas
 
         tasksRecyclerView.setVisibility(View.VISIBLE);
         noTasksView.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void thereIsGlobalTask(final Task task) {
+
+        getGlobalTaskFab.setVisibility(View.VISIBLE);
+        getGlobalTaskFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                mViewModel.addTask(task);
+                Log.i("WWW", "task: " + task.getTitle());
+                getGlobalTaskFab.setVisibility(View.GONE);
+            }
+        });
     }
 
     @Override
