@@ -8,34 +8,27 @@ import android.arch.persistence.room.OnConflictStrategy;
 import android.arch.persistence.room.Query;
 import android.arch.persistence.room.Update;
 
+import com.example.abdelazim.globaltask.repository.model.GlobalTask;
 import com.example.abdelazim.globaltask.repository.model.Task;
 
 import java.util.List;
 
 @Dao
-public interface TaskDao {
+public interface GlobalTaskDao {
 
     @Query("SELECT * FROM task_table ORDER BY time")
-    LiveData<List<Task>> getTasksLD();
+    List<GlobalTask> getGlobalTasks();
 
-    @Query("SELECT * FROM task_table WHERE global = 0 ORDER BY time")
-    List<Task> getTasks();
-
-    @Query("SELECT * FROM task_table WHERE id = :id")
-    Task getTaskById(int id);
-
-    @Query("SELECT * FROM task_table WHERE global = 1")
-    List<Task> getAllGlobalTasks();
-
-    @Query("SELECT * FROM task_table WHERE id = :id")
-    LiveData<Task> getTaskByIdLD(int id);
+    @Query("SELECT * FROM task_table ORDER BY time")
+    LiveData<List<GlobalTask>> getGlobalTasksLD();
 
     @Insert
-    long insertTask(Task task);
+    long insertTask(GlobalTask task);
 
     @Delete
-    void deleteTask(Task task);
+    void deleteTask(GlobalTask task);
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
-    void updateTask(Task task);
+    void updateTask(GlobalTask task);
 }
+

@@ -17,4 +17,5 @@ public class RemoteDatabase {
     public void publishTask(Task task) {
         tasksNode.push().setValue(task);
     }
+
 }

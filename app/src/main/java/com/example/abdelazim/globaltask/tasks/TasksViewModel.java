@@ -6,6 +6,7 @@ import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModel;
 import android.support.annotation.Nullable;
+import android.util.Log;
 
 import com.example.abdelazim.globaltask.repository.AppRepository;
 import com.example.abdelazim.globaltask.repository.model.Task;
@@ -18,7 +19,6 @@ public class TasksViewModel extends ViewModel {
     private AppRepository repository;
     private TaskAdapter adapter;
     private TasksView view;
-    private List<Task> globalTasksList = new ArrayList<>();
 
     private MutableLiveData<Task> taskLD = new MutableLiveData<>();
 
@@ -107,12 +107,7 @@ public class TasksViewModel extends ViewModel {
 
     public void newGlobalTask(Task task) {
 
-        globalTasksList = repository.getGlobalTasks();
 
-        if (!globalTasksList.contains(task)) {
-            globalTasksList.add(task);
-            taskLD.postValue(task);
-        }
     }
 
     public LiveData<Task> globalTask() {

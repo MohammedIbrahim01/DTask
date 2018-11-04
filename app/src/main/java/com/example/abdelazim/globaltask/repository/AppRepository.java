@@ -8,10 +8,12 @@ import com.example.abdelazim.globaltask.repository.local.AchievementsDao;
 import com.example.abdelazim.globaltask.repository.local.AppDatabase;
 import com.example.abdelazim.globaltask.repository.local.DayDao;
 import com.example.abdelazim.globaltask.repository.local.DayWithAchievementsDao;
+import com.example.abdelazim.globaltask.repository.local.GlobalTaskDao;
 import com.example.abdelazim.globaltask.repository.local.TaskDao;
 import com.example.abdelazim.globaltask.repository.model.Achievement;
 import com.example.abdelazim.globaltask.repository.model.Day;
 import com.example.abdelazim.globaltask.repository.model.DayWithAchievements;
+import com.example.abdelazim.globaltask.repository.model.GlobalTask;
 import com.example.abdelazim.globaltask.repository.model.Task;
 import com.example.abdelazim.globaltask.repository.remote.RemoteDatabase;
 import com.example.abdelazim.globaltask.utils.AppExecutors;
@@ -33,6 +35,7 @@ public class AppRepository {
     private AchievementsDao achievementDao;
     private DayDao dayDao;
     private DayWithAchievementsDao dayWithAchievementsDao;
+    private GlobalTaskDao globalTaskDao;
 
     private LiveData<List<Task>> taskList;
     private LiveData<List<DayWithAchievements>> dayWithAchievementsList;
@@ -62,6 +65,7 @@ public class AppRepository {
         achievementDao = database.achievementsDao();
         dayDao = database.dayDao();
         dayWithAchievementsDao = database.dayWithAchievementsDao();
+        globalTaskDao = database.globalTaskDao();
 
         remoteDatabase = new RemoteDatabase();
     }
@@ -242,20 +246,41 @@ public class AppRepository {
 
 
     private volatile boolean fetched;
-    private List<Task> globalTaskList;
+    private List<GlobalTask> globalTaskList;
 
-    public List<Task> getGlobalTasks() {
+    public List<GlobalTask> getGlobalTasks() {
         fetched = false;
 
         executors.diskIO.execute(new Runnable() {
             @Override
             public void run() {
 
-                globalTaskList = taskDao.getAllGlobalTasks();
+                globalTaskList = globalTaskDao.getGlobalTasks();
                 fetched = true;
             }
         });
         while (!fetched) ;
         return globalTaskList;
     }
+
+
+    private volatile boolean LDfetched;
+    private LiveData<List<GlobalTask>> globalTaskListLD;
+
+    public LiveData<List<GlobalTask>> getGlobalTasksLD() {
+        LDfetched = false;
+
+        executors.diskIO.execute(new Runnable() {
+            @Override
+            public void run() {
+
+                globalTaskListLD = globalTaskDao.getGlobalTasksLD();
+                LDfetched = true;
+            }
+        });
+        while (!LDfetched) ;
+        return globalTaskListLD;
+    }
+
+
 }

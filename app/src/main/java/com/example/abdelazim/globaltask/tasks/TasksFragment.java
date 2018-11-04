@@ -17,6 +17,8 @@ import android.widget.RelativeLayout;
 
 import com.example.abdelazim.globaltask.R;
 import com.example.abdelazim.globaltask.main.MainViewModel;
+import com.example.abdelazim.globaltask.repository.AppRepository;
+import com.example.abdelazim.globaltask.repository.model.GlobalTask;
 import com.example.abdelazim.globaltask.repository.model.Task;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -24,6 +26,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.robertlevonyan.views.customfloatingactionbutton.FloatingActionLayout;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -86,7 +90,17 @@ public class TasksFragment extends Fragment implements View.OnClickListener, Tas
         globalTasksNode.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                mViewModel.newGlobalTask(dataSnapshot.getValue(Task.class));
+                List<GlobalTask> globalTaskList = AppRepository.getInstance(getContext()).getGlobalTasks();
+
+                Task potintialNewGlobalTask = dataSnapshot.getValue(Task.class);
+
+                for (int i = 0; i < globalTaskList.size(); i++) {
+
+                    if (globalTaskList.get(i).getId() == potintialNewGlobalTask.getId())
+                        return;
+                }
+
+                mViewModel.newGlobalTask(potintialNewGlobalTask);
             }
 
             @Override
