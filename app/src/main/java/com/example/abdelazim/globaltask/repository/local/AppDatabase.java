@@ -7,9 +7,10 @@ import android.content.Context;
 
 import com.example.abdelazim.globaltask.repository.model.Achievement;
 import com.example.abdelazim.globaltask.repository.model.Day;
+import com.example.abdelazim.globaltask.repository.model.GlobalTask;
 import com.example.abdelazim.globaltask.repository.model.Task;
 
-@Database(entities = {Task.class, Achievement.class, Day.class}, version = 8, exportSchema = false)
+@Database(entities = {Task.class, Achievement.class, Day.class, GlobalTask.class}, version = 8, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
 
     private static final String DATABASE_NAME = "global-tasks-database";
