@@ -9,7 +9,7 @@ import com.example.abdelazim.globaltask.repository.model.Achievement;
 import com.example.abdelazim.globaltask.repository.model.Day;
 import com.example.abdelazim.globaltask.repository.model.Task;
 
-@Database(entities = {Task.class, Achievement.class, Day.class}, version = 6, exportSchema = false)
+@Database(entities = {Task.class, Achievement.class, Day.class}, version = 1, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
 
     private static final String DATABASE_NAME = "global-tasks-database";
@@ -21,7 +21,6 @@ public abstract class AppDatabase extends RoomDatabase {
             synchronized (LOCK) {
 
                 sInstance = Room.databaseBuilder(context, AppDatabase.class, DATABASE_NAME)
-                        .fallbackToDestructiveMigration()
                         .build();
             }
         }
