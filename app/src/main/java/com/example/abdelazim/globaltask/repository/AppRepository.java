@@ -207,7 +207,6 @@ public class AppRepository {
                 Task task = taskDao.getTaskById(id);
                 task.setLate(true);
                 taskDao.updateTask(task);
-                Task task1 = taskDao.getTaskById(id);
             }
         });
     }
@@ -218,7 +217,11 @@ public class AppRepository {
             @Override
             public void run() {
 
-                taskDao.updateTask(task);
+                long id = database.taskDao().insertTask(task);
+
+                Task justAddedTask = database.taskDao().getTaskById((int) id);
+
+                appNotifications.scheduleNewTask(justAddedTask);
             }
         });
     }
@@ -230,6 +233,7 @@ public class AppRepository {
             public void run() {
 
                 taskDao.deleteTask(task);
+                appNotifications.removeScheduledTask(task);
             }
         });
     }

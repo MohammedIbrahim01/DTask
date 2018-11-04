@@ -130,7 +130,7 @@
                 android:layout_marginLeft="16dp"
                 android:textColor="@color/colorSpotText"
                 android:textSize="24sp"
-                tools:text="00 : 01 am" />
+                android:text="00:00 am" />
 
             <ImageView
                 android:id="@+id/edit_imageView"

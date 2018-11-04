@@ -21,17 +21,18 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
+            android:layout_centerInParent="true"
             android:layout_marginTop="24dp"
+            android:fontFamily="casual"
             android:text="Zero Done"
             android:textColor="@android:color/darker_gray"
             android:textSize="32sp" />
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:alpha=".4"
-            android:src="@drawable/sad_man_0" />
+        <!--<ImageView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:alpha=".4"-->
+        <!--android:src="@drawable/sad_man_0" />-->
 
     </RelativeLayout>
 

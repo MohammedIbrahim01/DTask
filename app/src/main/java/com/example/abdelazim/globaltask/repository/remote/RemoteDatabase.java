@@ -6,7 +6,7 @@ import com.google.firebase.database.FirebaseDatabase;
 
 public class RemoteDatabase {
 
-    DatabaseReference tasksNode = FirebaseDatabase.getInstance().getReference().child("tasks");
+    DatabaseReference tasksNode = FirebaseDatabase.getInstance().getReference().child("globalTasks");
 
     public void publishTask(Task task) {
         tasksNode.push().setValue(task);

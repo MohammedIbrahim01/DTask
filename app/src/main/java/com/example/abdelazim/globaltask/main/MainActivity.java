@@ -222,6 +222,7 @@ public class MainActivity extends AppCompatActivity implements MainViewModel.Mai
                     signedInWithGoogle = false;
                     Toast.makeText(this, "Signed out !", Toast.LENGTH_SHORT).show();
                     updateUi();
+                    updateMenuForNormal();
                     return true;
                 }
 
@@ -255,9 +256,10 @@ public class MainActivity extends AppCompatActivity implements MainViewModel.Mai
                             currentUserNode.addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                    if (!dataSnapshot.hasChild("admin"))
+                                    if (!dataSnapshot.hasChild("admin")) {
                                         currentUserNode.child("admin").setValue(false);
-                                    else if (dataSnapshot.child("admin").getValue(Boolean.class)) {
+                                        currentUserNode.child("email").setValue(currentUser.getEmail());
+                                    } else if (dataSnapshot.child("admin").getValue(Boolean.class)) {
                                         updateMenuForAdmin();
                                         Log.i("WWW", "user is admin");
                                     }
@@ -289,6 +291,10 @@ public class MainActivity extends AppCompatActivity implements MainViewModel.Mai
 
     private void updateMenuForAdmin() {
         menu.findItem(R.id.action_publish_task).setVisible(true);
+    }
+
+    private void updateMenuForNormal() {
+        menu.findItem(R.id.action_publish_task).setVisible(false);
     }
 
     /**

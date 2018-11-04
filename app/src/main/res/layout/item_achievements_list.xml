@@ -18,19 +18,19 @@
         android:layout_height="wrap_content"
         android:paddingStart="@dimen/II_Dimen"
         android:paddingLeft="@dimen/II_Dimen"
-        android:paddingEnd="@dimen/III_Dimen"
-        android:paddingRight="@dimen/III_Dimen">
+        android:paddingEnd="@dimen/I_Dimen"
+        android:paddingRight="@dimen/I_Dimen">
 
         <TextView
             android:id="@+id/achievement_title_textView"
-            android:layout_width="wrap_content"
+            android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_alignParentLeft="true"
             android:fontFamily="casual"
             android:maxWidth="200dp"
             android:textColor="@android:color/black"
-            android:textSize="32sp"
+            android:textSize="28sp"
             tools:text="Title" />
 
         <TextView

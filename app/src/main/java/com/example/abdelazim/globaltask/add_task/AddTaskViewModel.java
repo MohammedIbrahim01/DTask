@@ -35,7 +35,7 @@ public class AddTaskViewModel extends ViewModel {
      */
     void saveNewTask(String title, String description, long timeInMillis) {
 
-        Task task = new Task(title, description, timeInMillis);
+        Task task = new Task((int) (timeInMillis % 1000), title, description, timeInMillis);
 
         repository.saveNewTask(task);
     }

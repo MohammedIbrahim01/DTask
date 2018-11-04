@@ -103,9 +103,9 @@ public class AddTaskFragment extends Fragment implements View.OnClickListener, T
 
         ButterKnife.bind(this, view);
 
-        // Set the initial time to display in the time textView
-        Calendar calendar = Calendar.getInstance();
-        timeTextView.setText(AppFormatter.formatTime(calendar.getTimeInMillis()));
+//        // Set the initial time to display in the time textView
+//        Calendar calendar = Calendar.getInstance();
+//        timeTextView.setText(AppFormatter.formatTime(calendar.getTimeInMillis()));
 
 
         timeTextView.setOnClickListener(this);
@@ -141,7 +141,8 @@ public class AddTaskFragment extends Fragment implements View.OnClickListener, T
      * Display PickTimeDialog
      */
     private void startPickTime() {
-        calendar = Calendar.getInstance();
+        if (calendar == null)
+            calendar = Calendar.getInstance();
         timePickerDialog = new TimePickerDialog(getContext(), this, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), false);
         timePickerDialog.show();
     }
@@ -236,6 +237,10 @@ public class AddTaskFragment extends Fragment implements View.OnClickListener, T
     private boolean thereIsEmptyFields() {
         if (titleEditText.getText().toString().isEmpty()) {
             titleEditText.setError("Task title is required");
+            titleEditText.requestFocus();
+            return true;
+        } else if (titleEditText.getText().toString().length() > 15) {
+            titleEditText.setError("too long!");
             titleEditText.requestFocus();
             return true;
         } else if (descriptionEditText.getText().toString().isEmpty()) {

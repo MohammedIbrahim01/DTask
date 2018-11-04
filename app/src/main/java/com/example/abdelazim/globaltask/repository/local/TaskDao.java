@@ -27,7 +27,7 @@ public interface TaskDao {
     @Query("SELECT * FROM task_table WHERE id = :id")
     LiveData<Task> getTaskByIdLD(int id);
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     long insertTask(Task task);
 
     @Delete

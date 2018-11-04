@@ -50,7 +50,7 @@ public class AppFormatter {
         else
             formattedMinute = String.valueOf(minute);
 
-        return hourOfDay + ":" + formattedMinute + " " + AM_PM;
+        return hourOfDay + ":" + formattedMinute + AM_PM;
     }
 
     public static String formatDate(long time) {
