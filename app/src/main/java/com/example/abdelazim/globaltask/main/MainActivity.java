@@ -244,6 +244,7 @@ public class MainActivity extends AppCompatActivity implements MainViewModel.Mai
             if (result.isSuccess()) {
 
                 GoogleSignInAccount account = result.getSignInAccount();
+                Log.i("WWW", "account: " + account.getEmail() + "idToken: " + account.getIdToken());
                 AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
                 firebaseAuth.signInWithCredential(credential).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
@@ -277,6 +278,8 @@ public class MainActivity extends AppCompatActivity implements MainViewModel.Mai
                         }
                     }
                 });
+            } else {
+                Log.i("WWW", "result isnot success: " + result.getStatus());
             }
         }
     }
