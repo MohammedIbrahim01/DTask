@@ -13,7 +13,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import com.abdelazim.globaltask.PublishTaskActivity;
+import com.abdelazim.globaltask.publish_task_admin.PublishTaskActivity;
 import com.abdelazim.globaltask.R;
 import com.abdelazim.globaltask.achievements.AchievementsFragment;
 import com.abdelazim.globaltask.add_task.AddTaskFragment;
@@ -64,6 +64,7 @@ public class MainActivity extends AppCompatActivity implements MainViewModel.Mai
     AdView adView;
     InterstitialAd interstitialAd;
     private int interstitialCount = 0;
+    private boolean admin;
 
 
     @Override
@@ -84,10 +85,30 @@ public class MainActivity extends AppCompatActivity implements MainViewModel.Mai
         // Observe
         mainViewModel.observe(this);
 
-        // Firebase
-        firebaseAuth = FirebaseAuth.getInstance();
         firebaseDatabase = FirebaseDatabase.getInstance();
         usersNode = firebaseDatabase.getReference().child("users");
+
+        // Firebase
+        firebaseAuth = FirebaseAuth.getInstance();
+        if (firebaseAuth.getCurrentUser() != null) {
+            signedInWithGoogle = true;
+            usersNode.child(firebaseAuth.getUid()).addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.child("admin").getValue(Boolean.class)) {
+                        admin = true;
+                        if (menu != null)
+                            updatMenu();
+                        Log.i("WWW", "user is admin");
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+        }
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
@@ -192,7 +213,7 @@ public class MainActivity extends AppCompatActivity implements MainViewModel.Mai
         getMenuInflater().inflate(R.menu.main, menu);
 
         this.menu = menu;
-        updateUi();
+        updatMenu();
         return true;
     }
 
@@ -217,10 +238,10 @@ public class MainActivity extends AppCompatActivity implements MainViewModel.Mai
                     return true;
                 } else {
                     Auth.GoogleSignInApi.signOut(googleApiClient);
+                    firebaseAuth.signOut();
                     signedInWithGoogle = false;
                     Toast.makeText(this, "Signed out !", Toast.LENGTH_SHORT).show();
-                    updateUi();
-                    updateMenuForNormal();
+                    updatMenu();
                     return true;
                 }
 
@@ -249,7 +270,7 @@ public class MainActivity extends AppCompatActivity implements MainViewModel.Mai
                     public void onComplete(@NonNull com.google.android.gms.tasks.Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             signedInWithGoogle = true;
-                            updateUi();
+                            updatMenu();
                             final FirebaseUser currentUser = firebaseAuth.getCurrentUser();
                             final DatabaseReference currentUserNode = usersNode.child(currentUser.getUid());
                             currentUserNode.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -259,7 +280,8 @@ public class MainActivity extends AppCompatActivity implements MainViewModel.Mai
                                         currentUserNode.child("admin").setValue(false);
                                         currentUserNode.child("email").setValue(currentUser.getEmail());
                                     } else if (dataSnapshot.child("admin").getValue(Boolean.class)) {
-                                        updateMenuForAdmin();
+                                        admin = true;
+                                        updatMenu();
                                         Log.i("WWW", "user is admin");
                                     }
                                 }
@@ -282,21 +304,22 @@ public class MainActivity extends AppCompatActivity implements MainViewModel.Mai
         }
     }
 
-    private void updateUi() {
+    private void updatMenu() {
 
         if (signedInWithGoogle)
             menu.findItem(R.id.action_log).setTitle("log out");
-        else
+        else {
+
             menu.findItem(R.id.action_log).setTitle("Sign in with google");
+            menu.findItem(R.id.action_publish_task).setVisible(false);
+            admin = false;
+        }
+        if (admin)
+            menu.findItem(R.id.action_publish_task).setVisible(true);
+        else
+            menu.findItem(R.id.action_publish_task).setVisible(false);
     }
 
-    private void updateMenuForAdmin() {
-        menu.findItem(R.id.action_publish_task).setVisible(true);
-    }
-
-    private void updateMenuForNormal() {
-        menu.findItem(R.id.action_publish_task).setVisible(false);
-    }
 
     /**
      * Display the appropriate fragment

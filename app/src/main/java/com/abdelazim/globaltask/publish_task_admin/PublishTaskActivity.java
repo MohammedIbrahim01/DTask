@@ -1,9 +1,10 @@
-package com.abdelazim.globaltask;
+package com.abdelazim.globaltask.publish_task_admin;
 
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
+import com.abdelazim.globaltask.R;
 import com.abdelazim.globaltask.add_task.AddTaskFragment;
 
 public class PublishTaskActivity extends AppCompatActivity {

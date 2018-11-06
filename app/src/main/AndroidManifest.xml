@@ -39,7 +39,7 @@
             </intent-filter>
         </receiver>
 
-        <activity android:name="com.abdelazim.globaltask.PublishTaskActivity"></activity>
+        <activity android:name="com.abdelazim.globaltask.publish_task_admin.PublishTaskActivity"></activity>
     </application>
 
 </manifest>

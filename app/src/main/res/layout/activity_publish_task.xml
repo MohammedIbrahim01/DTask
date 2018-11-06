@@ -5,4 +5,4 @@
     android:id="@+id/publish_task_frag_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".PublishTaskActivity" />
+    tools:context=".publish_task_admin.PublishTaskActivity" />
