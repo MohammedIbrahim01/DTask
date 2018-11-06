@@ -55,7 +55,8 @@ public class AddTaskViewModel extends ViewModel {
 
     public void publishTask(String title, String description, long timeInMillis, Context context) {
 
-        Task task = new Task(title, description, timeInMillis);
+        Task task = new Task((int) timeInMillis % 1000, title, description, timeInMillis);
+        task.setGlobal(1);
         repository = AppRepository.getInstance(context);
         repository.publishTask(task);
     }

@@ -32,6 +32,7 @@ public class MainViewModel extends ViewModel {
     private AppScheduler appScheduler;
     private SharedPreferences sharedPreferences;
 
+
     public void start(Context applicationContext, MainActivityView mainActivityView) {
 
         repository = AppRepository.getInstance(applicationContext);
