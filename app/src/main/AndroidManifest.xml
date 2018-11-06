@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.abdelazim.globaltask">
+    package="com.abdelazim.globaltask">
 
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
@@ -15,7 +15,7 @@
             android:value="@string/app_id" />
 
         <activity
-            android:name=".main.MainActivity"
+            android:name="com.abdelazim.globaltask.main.MainActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait">
             <intent-filter>
@@ -25,13 +25,13 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".settings.SettingsActivity"
+            android:name="com.abdelazim.globaltask.settings.SettingsActivity"
             android:label="@string/title_activity_settings"
             android:screenOrientation="portrait" />
 
-        <receiver android:name=".utils.NotificationPublisher" />
-        <receiver android:name=".utils.TasksCleaner" />
-        <receiver android:name=".utils.BootReceiver">
+        <receiver android:name="com.abdelazim.globaltask.utils.NotificationPublisher" />
+        <receiver android:name="com.abdelazim.globaltask.utils.TasksCleaner" />
+        <receiver android:name="com.abdelazim.globaltask.utils.BootReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
 
@@ -39,7 +39,7 @@
             </intent-filter>
         </receiver>
 
-        <activity android:name=".PublishTaskActivity"></activity>
+        <activity android:name="com.abdelazim.globaltask.PublishTaskActivity"></activity>
     </application>
 
 </manifest>

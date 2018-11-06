@@ -1,35 +1,35 @@
 {
   "project_info": {
-    "project_number": "569514371908",
-    "firebase_url": "https://dailytask-77bc1.firebaseio.com",
-    "project_id": "dailytask-77bc1",
-    "storage_bucket": "dailytask-77bc1.appspot.com"
+    "project_number": "10593085827",
+    "firebase_url": "https://globaltask-01901.firebaseio.com",
+    "project_id": "globaltask-01901",
+    "storage_bucket": "globaltask-01901.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:569514371908:android:3fe4b465b2942649",
+        "mobilesdk_app_id": "1:10593085827:android:5094c0883f0d4ffd",
         "android_client_info": {
-          "package_name": "com.abdelazim.dailytask"
+          "package_name": "com.abdelazim.globaltask"
         }
       },
       "oauth_client": [
         {
-          "client_id": "569514371908-dlqvccqrtdr2jost4re2fo7ceiqq49tc.apps.googleusercontent.com",
+          "client_id": "10593085827-vj3tc1037fvbs2vq5cvoaguuivgocum7.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.abdelazim.dailytask",
-            "certificate_hash": "5c28bd7801727af03d86636d23b92a94ed180d25"
+            "package_name": "com.abdelazim.globaltask",
+            "certificate_hash": "ecaf1502519ee1e2619b78f92ed92595514376ba"
           }
         },
         {
-          "client_id": "569514371908-dspua39ph41v766p5296j9uf4gl5glp3.apps.googleusercontent.com",
+          "client_id": "10593085827-ig9ibjt9l14noln76rhb1hnimlekgrog.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAX2GRtpJbS8MNQeYMnUoFAyAd0jmlXbgA"
+          "current_key": "AIzaSyC0VcW2VgSkyoqu3dAo7PBseOQcoIwBNmY"
         }
       ],
       "services": {
@@ -40,7 +40,7 @@
           "status": 2,
           "other_platform_oauth_client": [
             {
-              "client_id": "569514371908-dspua39ph41v766p5296j9uf4gl5glp3.apps.googleusercontent.com",
+              "client_id": "10593085827-ig9ibjt9l14noln76rhb1hnimlekgrog.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
